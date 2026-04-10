@@ -8,13 +8,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <style>
-        /* =========================================
-           VARIABLES Y RESET
-           ========================================= */
         :root {
             --color-primary: #1a3c34;
             --color-primary-dark: #0f2920;
@@ -45,16 +40,8 @@
             --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
 
         body {
             font-family: var(--font-body);
@@ -65,14 +52,10 @@
             min-height: 100vh;
         }
 
-        /* Fondo decorativo sutil */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background:
                 radial-gradient(ellipse at 20% 0%, rgba(200,164,90,0.06) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 100%, rgba(26,60,52,0.05) 0%, transparent 50%);
@@ -80,598 +63,235 @@
             z-index: 0;
         }
 
-        a {
-            color: var(--color-primary);
-            text-decoration: none;
-            transition: color var(--transition);
-        }
+        a { color: var(--color-primary); text-decoration: none; transition: color var(--transition); }
+        a:hover { color: var(--color-accent-dark); }
+        img { max-width: 100%; display: block; }
 
-        a:hover {
-            color: var(--color-accent-dark);
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        /* =========================================
-           HEADER
-           ========================================= */
         .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
             background: rgba(250,248,244,0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--color-border-light);
             transition: box-shadow var(--transition);
         }
-
-        .site-header.scrolled {
-            box-shadow: var(--shadow-md);
-        }
+        .site-header.scrolled { box-shadow: var(--shadow-md); }
 
         .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
+            max-width: 1200px; margin: 0 auto; padding: 0 24px;
+            height: 72px; display: flex; align-items: center;
+            justify-content: space-between; gap: 24px;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
+        .logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
         .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--color-primary);
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-accent);
-            position: relative;
-            overflow: hidden;
+            width: 42px; height: 42px; background: var(--color-primary);
+            border-radius: var(--radius-sm); display: flex; align-items: center;
+            justify-content: center; color: var(--color-accent); position: relative; overflow: hidden;
         }
-
         .logo-icon::after {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            border: 1px solid rgba(200,164,90,0.3);
-            border-radius: 4px;
+            content: ''; position: absolute; inset: 2px;
+            border: 1px solid rgba(200,164,90,0.3); border-radius: 4px;
         }
-
-        .logo-icon svg {
-            width: 22px;
-            height: 22px;
-        }
-
+        .logo-icon svg { width: 22px; height: 22px; }
         .logo-text {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary-dark);
-            line-height: 1.1;
+            font-family: var(--font-display); font-size: 1.5rem;
+            font-weight: 700; color: var(--color-primary-dark); line-height: 1.1;
         }
-
         .logo-sub {
-            font-family: var(--font-body);
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: var(--color-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
+            font-family: var(--font-body); font-size: 0.7rem; font-weight: 400;
+            color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.12em;
         }
 
-        /* Barra de búsqueda */
-        .search-bar {
-            flex: 1;
-            max-width: 480px;
-            position: relative;
-        }
-
+        .search-bar { flex: 1; max-width: 480px; position: relative; }
         .search-bar input {
-            width: 100%;
-            padding: 10px 16px 10px 44px;
-            border: 1.5px solid var(--color-border);
-            border-radius: 100px;
-            background: var(--color-bg-card);
-            font-family: var(--font-body);
-            font-size: 0.95rem;
-            color: var(--color-text);
-            transition: all var(--transition);
-            outline: none;
+            width: 100%; padding: 10px 16px 10px 44px;
+            border: 1.5px solid var(--color-border); border-radius: 100px;
+            background: var(--color-bg-card); font-family: var(--font-body);
+            font-size: 0.95rem; color: var(--color-text);
+            transition: all var(--transition); outline: none;
         }
-
-        .search-bar input:focus {
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(200,164,90,0.15);
-        }
-
-        .search-bar input::placeholder {
-            color: var(--color-text-muted);
-        }
-
+        .search-bar input:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(200,164,90,0.15); }
+        .search-bar input::placeholder { color: var(--color-text-muted); }
         .search-bar .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--color-text-muted);
-            width: 18px;
-            height: 18px;
-            pointer-events: none;
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--color-text-muted); width: 18px; height: 18px; pointer-events: none;
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
+        .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .btn-icon {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: transparent;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-text-light);
-            cursor: pointer;
-            transition: all var(--transition);
-            position: relative;
+            width: 40px; height: 40px; border: none; background: transparent;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--color-text-light); cursor: pointer; transition: all var(--transition);
         }
+        .btn-icon:hover { background: var(--color-bg-warm); color: var(--color-primary); }
+        .btn-icon svg { width: 20px; height: 20px; }
 
-        .btn-icon:hover {
-            background: var(--color-bg-warm);
-            color: var(--color-primary);
-        }
-
-        .btn-icon svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* =========================================
-           HERO
-           ========================================= */
         .hero {
-            position: relative;
-            z-index: 1;
-            background: var(--color-primary);
-            overflow: hidden;
+            position: relative; z-index: 1;
+            background: var(--color-primary); overflow: hidden;
         }
-
         .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a45a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            content: ''; position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a45a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             pointer-events: none;
         }
-
         .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: var(--color-bg);
+            content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+            height: 60px; background: var(--color-bg);
             clip-path: ellipse(55% 100% at 50% 100%);
         }
-
         .hero-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 64px 24px 80px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            max-width: 1200px; margin: 0 auto; padding: 64px 24px 80px;
+            text-align: center; position: relative; z-index: 1;
         }
-
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: rgba(200,164,90,0.15);
-            border: 1px solid rgba(200,164,90,0.25);
-            border-radius: 100px;
-            color: var(--color-accent-light);
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 24px;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; background: rgba(200,164,90,0.15);
+            border: 1px solid rgba(200,164,90,0.25); border-radius: 100px;
+            color: var(--color-accent-light); font-size: 0.8rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px;
             animation: fadeInDown 0.6s ease;
         }
-
         .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(2.4rem, 5vw, 3.8rem);
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.15;
-            margin-bottom: 16px;
+            font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 16px;
             animation: fadeInDown 0.6s ease 0.1s both;
         }
-
-        .hero h1 .accent {
-            color: var(--color-accent);
-        }
-
+        .hero h1 .accent { color: var(--color-accent); }
         .hero p {
-            font-size: 1.15rem;
-            color: rgba(255,255,255,0.7);
-            max-width: 560px;
-            margin: 0 auto 32px;
-            line-height: 1.7;
+            font-size: 1.15rem; color: rgba(255,255,255,0.7);
+            max-width: 560px; margin: 0 auto 32px; line-height: 1.7;
             animation: fadeInDown 0.6s ease 0.2s both;
         }
-
         .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 48px;
+            display: flex; justify-content: center; gap: 48px;
             animation: fadeInUp 0.6s ease 0.3s both;
         }
-
-        .hero-stat {
-            text-align: center;
-        }
-
+        .hero-stat { text-align: center; }
         .hero-stat-num {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-accent);
-            line-height: 1;
+            font-family: var(--font-display); font-size: 2rem;
+            font-weight: 700; color: var(--color-accent); line-height: 1;
         }
-
         .hero-stat-label {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 4px;
+            font-size: 0.8rem; color: rgba(255,255,255,0.5);
+            text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;
         }
 
-        /* =========================================
-           NAV CATEGORÍAS
-           ========================================= */
-        .categories-nav {
-            position: relative;
-            z-index: 2;
-            margin-top: -20px;
-            margin-bottom: 40px;
-        }
-
-        .categories-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
+        .categories-nav { position: relative; z-index: 2; margin-top: -20px; margin-bottom: 40px; }
+        .categories-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         .categories-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 8px 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            display: flex; gap: 10px; overflow-x: auto; padding: 8px 0;
+            scrollbar-width: none; -ms-overflow-style: none;
         }
-
-        .categories-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
+        .categories-scroll::-webkit-scrollbar { display: none; }
         .cat-btn {
-            flex-shrink: 0;
-            padding: 10px 20px;
-            border: 1.5px solid var(--color-border);
-            border-radius: 100px;
-            background: var(--color-bg-card);
-            font-family: var(--font-body);
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--color-text-light);
-            cursor: pointer;
-            transition: all var(--transition);
-            white-space: nowrap;
+            flex-shrink: 0; padding: 10px 20px; border: 1.5px solid var(--color-border);
+            border-radius: 100px; background: var(--color-bg-card); font-family: var(--font-body);
+            font-size: 0.88rem; font-weight: 600; color: var(--color-text-light);
+            cursor: pointer; transition: all var(--transition); white-space: nowrap;
             box-shadow: var(--shadow-sm);
         }
-
         .cat-btn:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            border-color: var(--color-accent); color: var(--color-accent-dark);
+            transform: translateY(-1px); box-shadow: var(--shadow-md);
         }
-
         .cat-btn.active {
-            background: var(--color-primary);
-            border-color: var(--color-primary);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(26,60,52,0.25);
+            background: var(--color-primary); border-color: var(--color-primary);
+            color: #fff; box-shadow: 0 4px 12px rgba(26,60,52,0.25);
         }
-
         .cat-btn .cat-count {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 6px;
-            background: rgba(0,0,0,0.08);
-            border-radius: 100px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            margin-left: 6px;
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 20px; height: 20px; padding: 0 6px;
+            background: rgba(0,0,0,0.08); border-radius: 100px;
+            font-size: 0.72rem; font-weight: 700; margin-left: 6px;
         }
+        .cat-btn.active .cat-count { background: rgba(255,255,255,0.2); color: #fff; }
 
-        .cat-btn.active .cat-count {
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-        }
-
-        /* =========================================
-           CONTENIDO PRINCIPAL
-           ========================================= */
-        .main-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px 80px;
-        }
-
+        .main-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
         .content-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
         }
-
-        .results-info {
-            font-size: 0.92rem;
-            color: var(--color-text-light);
-        }
-
-        .results-info strong {
-            color: var(--color-text);
-        }
-
+        .results-info { font-size: 0.92rem; color: var(--color-text-light); }
+        .results-info strong { color: var(--color-text); }
         .view-toggle {
-            display: flex;
-            gap: 4px;
-            background: var(--color-bg-warm);
-            padding: 4px;
-            border-radius: var(--radius-sm);
+            display: flex; gap: 4px; background: var(--color-bg-warm);
+            padding: 4px; border-radius: var(--radius-sm);
         }
-
         .view-btn {
-            width: 34px;
-            height: 34px;
-            border: none;
-            background: transparent;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-text-muted);
-            cursor: pointer;
-            transition: all var(--transition);
+            width: 34px; height: 34px; border: none; background: transparent;
+            border-radius: 4px; display: flex; align-items: center; justify-content: center;
+            color: var(--color-text-muted); cursor: pointer; transition: all var(--transition);
         }
-
         .view-btn.active {
-            background: var(--color-bg-card);
-            color: var(--color-primary);
+            background: var(--color-bg-card); color: var(--color-primary);
             box-shadow: var(--shadow-sm);
         }
+        .view-btn svg { width: 16px; height: 16px; }
 
-        .view-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        /* =========================================
-           GRID DE LIBROS
-           ========================================= */
         .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;
         }
-
-        .books-grid.list-view {
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
+        .books-grid.list-view { grid-template-columns: 1fr; gap: 16px; }
 
         .book-card {
-            background: var(--color-bg-card);
-            border: 1px solid var(--color-border-light);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            transition: all var(--transition);
-            cursor: pointer;
-            position: relative;
+            background: var(--color-bg-card); border: 1px solid var(--color-border-light);
+            border-radius: var(--radius-lg); overflow: hidden; transition: all var(--transition);
+            cursor: pointer; position: relative; animation: fadeInUp 0.4s ease both;
         }
-
         .book-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--color-accent);
+            transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--color-accent);
         }
-
         .book-cover {
-            height: 180px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 180px; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
-
         .book-cover-pattern {
-            position: absolute;
-            inset: 0;
-            opacity: 0.08;
+            position: absolute; inset: 0; opacity: 0.08;
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l2 3.25-2 3.25zM0 20h2v20H0V20zm4 0h2v20H4V20z' fill='%23000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
-
         .book-cover-icon {
-            position: relative;
-            z-index: 1;
-            width: 64px;
-            height: 80px;
-            background: rgba(255,255,255,0.15);
-            border: 2px solid rgba(255,255,255,0.25);
-            border-radius: 4px 8px 8px 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
+            position: relative; z-index: 1; width: 64px; height: 80px;
+            background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.25);
+            border-radius: 4px 8px 8px 4px; display: flex; align-items: center;
+            justify-content: center; color: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px); font-size: 28px;
         }
-
-        .book-cover-icon svg {
-            width: 28px;
-            height: 28px;
-        }
-
         .book-category-tag {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 4px 10px;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(8px);
-            border-radius: 100px;
-            color: #fff;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            z-index: 2;
+            position: absolute; top: 12px; left: 12px; padding: 4px 10px;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+            border-radius: 100px; color: #fff; font-size: 0.7rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; z-index: 2;
         }
-
-        .book-body {
-            padding: 20px;
-        }
-
+        .book-body { padding: 20px; }
         .book-title {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--color-primary-dark);
-            margin-bottom: 4px;
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+            color: var(--color-primary-dark); margin-bottom: 4px; line-height: 1.3;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
-
-        .book-author {
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
-            margin-bottom: 10px;
-        }
-
+        .book-author { font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 10px; }
         .book-desc {
-            font-size: 0.88rem;
-            color: var(--color-text-light);
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 16px;
+            font-size: 0.88rem; color: var(--color-text-light); line-height: 1.6;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+            overflow: hidden; margin-bottom: 16px;
         }
-
         .book-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 14px;
-            border-top: 1px solid var(--color-border-light);
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 14px; border-top: 1px solid var(--color-border-light);
         }
-
-        .book-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.78rem;
-            color: var(--color-text-muted);
-        }
-
-        .book-meta-item svg {
-            width: 14px;
-            height: 14px;
-        }
-
+        .book-meta-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--color-text-muted); }
         .book-read-btn {
-            padding: 6px 14px;
-            background: var(--color-primary);
-            color: #fff;
-            border: none;
-            border-radius: 100px;
-            font-family: var(--font-body);
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
+            padding: 6px 14px; background: var(--color-primary); color: #fff;
+            border: none; border-radius: 100px; font-family: var(--font-body);
+            font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all var(--transition);
         }
+        .book-read-btn:hover { background: var(--color-primary-light); transform: scale(1.05); }
 
-        .book-read-btn:hover {
-            background: var(--color-primary-light);
-            transform: scale(1.05);
-        }
+        .list-view .book-card { display: flex; flex-direction: row; }
+        .list-view .book-cover { width: 160px; min-width: 160px; height: auto; min-height: 140px; }
+        .list-view .book-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .list-view .book-desc { -webkit-line-clamp: 2; }
 
-        /* Vista de lista */
-        .list-view .book-card {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .list-view .book-cover {
-            width: 160px;
-            min-width: 160px;
-            height: auto;
-            min-height: 140px;
-        }
-
-        .list-view .book-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .list-view .book-desc {
-            -webkit-line-clamp: 2;
-        }
-
-        /* Colores de portada por categoría */
         .cover-at .book-cover { background: linear-gradient(135deg, #8B4513, #A0522D); }
         .cover-pentateuco .book-cover { background: linear-gradient(135deg, #2F4F4F, #3d6666); }
         .cover-historicos .book-cover { background: linear-gradient(135deg, #556B2F, #6b8f3b); }
@@ -684,343 +304,83 @@
         .cover-estudio .book-cover { background: linear-gradient(135deg, #34495e, #4a6785); }
         .cover-default .book-cover { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); }
 
-        /* =========================================
-           ESTADOS VACÍOS Y CARGA
-           ========================================= */
-        .loading-state,
-        .empty-state,
-        .error-state {
-            text-align: center;
-            padding: 80px 24px;
-            grid-column: 1 / -1;
-        }
-
+        .loading-state, .empty-state, .error-state { text-align: center; padding: 80px 24px; grid-column: 1 / -1; }
         .loading-spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid var(--color-border);
-            border-top-color: var(--color-accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
+            width: 48px; height: 48px; border: 3px solid var(--color-border);
+            border-top-color: var(--color-accent); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 0 auto 20px;
         }
-
-        .state-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 20px;
-            color: var(--color-text-muted);
-            opacity: 0.5;
-        }
-
-        .state-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .state-title {
-            font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--color-text);
-            margin-bottom: 8px;
-        }
-
-        .state-desc {
-            font-size: 0.95rem;
-            color: var(--color-text-muted);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
+        .state-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--color-text); margin-bottom: 8px; }
+        .state-desc { font-size: 0.95rem; color: var(--color-text-muted); max-width: 400px; margin: 0 auto; }
         .btn-retry {
-            margin-top: 20px;
-            padding: 10px 24px;
-            background: var(--color-primary);
-            color: #fff;
-            border: none;
-            border-radius: 100px;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
+            margin-top: 20px; padding: 10px 24px; background: var(--color-primary);
+            color: #fff; border: none; border-radius: 100px; font-family: var(--font-body);
+            font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all var(--transition);
         }
+        .btn-retry:hover { background: var(--color-primary-light); transform: translateY(-1px); }
 
-        .btn-retry:hover {
-            background: var(--color-primary-light);
-            transform: translateY(-1px);
-        }
-
-        /* =========================================
-           MODAL LECTOR
-           ========================================= */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px); z-index: 1000; display: none;
+            align-items: center; justify-content: center; padding: 24px;
         }
-
-        .modal-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
+        .modal-overlay.visible { display: flex; }
         .modal-content {
-            background: var(--color-bg-card);
-            border-radius: var(--radius-xl);
-            max-width: 720px;
-            width: 100%;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-xl);
-            transform: scale(0.95) translateY(10px);
-            transition: transform 0.3s ease;
-            overflow: hidden;
+            background: var(--color-bg-card); border-radius: var(--radius-xl);
+            max-width: 720px; width: 100%; max-height: 85vh; display: flex;
+            flex-direction: column; box-shadow: var(--shadow-xl); overflow: hidden;
         }
-
-        .modal-overlay.visible .modal-content {
-            transform: scale(1) translateY(0);
-        }
-
         .modal-header {
-            padding: 24px 28px 20px;
-            border-bottom: 1px solid var(--color-border-light);
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
+            padding: 24px 28px 20px; border-bottom: 1px solid var(--color-border-light);
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
         }
-
-        .modal-title-group {
-            flex: 1;
-        }
-
-        .modal-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-primary-dark);
-            margin-bottom: 4px;
-        }
-
-        .modal-subtitle {
-            font-size: 0.88rem;
-            color: var(--color-text-muted);
-        }
-
+        .modal-title-group { flex: 1; }
+        .modal-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 4px; }
+        .modal-subtitle { font-size: 0.88rem; color: var(--color-text-muted); }
         .modal-close {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: var(--color-bg-warm);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-text-light);
-            cursor: pointer;
-            transition: all var(--transition);
-            flex-shrink: 0;
+            width: 36px; height: 36px; border: none; background: var(--color-bg-warm);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--color-text-light); cursor: pointer; transition: all var(--transition); flex-shrink: 0;
         }
-
-        .modal-close:hover {
-            background: var(--color-border);
-            color: var(--color-text);
-        }
-
-        .modal-close svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 28px;
-        }
-
-        .modal-body-text {
-            font-size: 1.02rem;
-            line-height: 1.85;
-            color: var(--color-text);
-        }
-
-        .modal-body-text p {
-            margin-bottom: 16px;
-        }
-
-        .modal-body-text h2 {
-            font-family: var(--font-display);
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin: 28px 0 12px;
-        }
-
-        .modal-body-text h3 {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--color-primary-dark);
-            margin: 20px 0 8px;
-        }
-
+        .modal-close:hover { background: var(--color-border); color: var(--color-text); }
+        .modal-body { flex: 1; overflow-y: auto; padding: 28px; }
+        .modal-body-text { font-size: 1.02rem; line-height: 1.85; color: var(--color-text); }
+        .modal-body-text p { margin-bottom: 16px; }
+        .modal-body-text h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-primary); margin: 28px 0 12px; }
+        .modal-body-text h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--color-primary-dark); margin: 20px 0 8px; }
         .modal-body-text blockquote {
-            border-left: 3px solid var(--color-accent);
-            padding: 12px 20px;
-            margin: 16px 0;
-            background: var(--color-bg-warm);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            font-style: italic;
-            color: var(--color-text-light);
+            border-left: 3px solid var(--color-accent); padding: 12px 20px; margin: 16px 0;
+            background: var(--color-bg-warm); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-style: italic; color: var(--color-text-light);
         }
-
-        .modal-body-text .verse-num {
-            font-weight: 700;
-            color: var(--color-accent-dark);
-            font-size: 0.85em;
-            vertical-align: super;
-            margin-right: 2px;
-        }
-
-        .modal-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px;
-            color: var(--color-text-muted);
-            gap: 16px;
-        }
-
+        .modal-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; color: var(--color-text-muted); gap: 16px; }
         .modal-footer {
-            padding: 16px 28px;
-            border-top: 1px solid var(--color-border-light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--color-bg-warm);
+            padding: 16px 28px; border-top: 1px solid var(--color-border-light);
+            display: flex; align-items: center; justify-content: space-between; background: var(--color-bg-warm);
         }
+        .modal-footer-info { font-size: 0.8rem; color: var(--color-text-muted); }
 
-        .modal-footer-info {
-            font-size: 0.8rem;
-            color: var(--color-text-muted);
-        }
+        .site-footer { position: relative; z-index: 1; background: var(--color-primary-dark); color: rgba(255,255,255,0.5); padding: 40px 24px; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .footer-text { font-size: 0.85rem; }
+        .footer-text a { color: var(--color-accent); }
+        .footer-verse { font-family: var(--font-display); font-style: italic; font-size: 0.9rem; color: rgba(255,255,255,0.35); }
 
-        /* =========================================
-           FOOTER
-           ========================================= */
-        .site-footer {
-            position: relative;
-            z-index: 1;
-            background: var(--color-primary-dark);
-            color: rgba(255,255,255,0.5);
-            padding: 40px 24px;
-        }
-
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .footer-text {
-            font-size: 0.85rem;
-        }
-
-        .footer-text a {
-            color: var(--color-accent);
-        }
-
-        .footer-verse {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.35);
-        }
-
-        /* =========================================
-           TOAST
-           ========================================= */
-        .toast-container {
-            position: fixed;
-            top: 84px;
-            right: 24px;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
+        .toast-container { position: fixed; top: 84px; right: 24px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
         .toast {
-            padding: 12px 20px;
-            background: var(--color-primary-dark);
-            color: #fff;
-            border-radius: var(--radius-md);
-            font-size: 0.88rem;
-            box-shadow: var(--shadow-lg);
-            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
-            max-width: 340px;
+            padding: 12px 20px; background: var(--color-primary-dark); color: #fff;
+            border-radius: var(--radius-md); font-size: 0.88rem; box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards; max-width: 340px;
         }
+        .toast.error { background: var(--color-error); }
+        .toast.success { background: var(--color-success); }
 
-        .toast.error {
-            background: var(--color-error);
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(20px); } }
 
-        .toast.success {
-            background: var(--color-success);
-        }
-
-        /* =========================================
-           ANIMACIONES
-           ========================================= */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateX(20px); }
-        }
-
-        .book-card {
-            animation: fadeInUp 0.4s ease both;
-        }
-
-        /* Stagger para las tarjetas */
         .book-card:nth-child(1) { animation-delay: 0.02s; }
         .book-card:nth-child(2) { animation-delay: 0.06s; }
         .book-card:nth-child(3) { animation-delay: 0.10s; }
@@ -1034,141 +394,57 @@
         .book-card:nth-child(11) { animation-delay: 0.42s; }
         .book-card:nth-child(12) { animation-delay: 0.46s; }
 
-        /* =========================================
-           RESPONSIVE
-           ========================================= */
         @media (max-width: 768px) {
-            .header-inner {
-                height: 64px;
-                padding: 0 16px;
-            }
-
-            .logo-text {
-                font-size: 1.2rem;
-            }
-
-            .search-bar {
-                display: none;
-            }
-
+            .header-inner { height: 64px; padding: 0 16px; }
+            .logo-text { font-size: 1.2rem; }
+            .search-bar { display: none; }
             .search-bar.mobile-visible {
-                display: block;
-                position: absolute;
-                top: 64px;
-                left: 0;
-                right: 0;
-                padding: 12px 16px;
-                background: rgba(250,248,244,0.95);
-                backdrop-filter: blur(16px);
-                border-bottom: 1px solid var(--color-border-light);
-                z-index: 99;
+                display: block; position: absolute; top: 64px; left: 0; right: 0;
+                padding: 12px 16px; background: rgba(250,248,244,0.95);
+                backdrop-filter: blur(16px); border-bottom: 1px solid var(--color-border-light); z-index: 99;
             }
-
-            .hero-inner {
-                padding: 40px 16px 60px;
-            }
-
-            .hero-stats {
-                gap: 28px;
-            }
-
-            .hero-stat-num {
-                font-size: 1.5rem;
-            }
-
-            .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 16px;
-            }
-
-            .list-view .book-card {
-                flex-direction: column;
-            }
-
-            .list-view .book-cover {
-                width: 100%;
-                min-width: unset;
-                height: 140px;
-            }
-
-            .modal-content {
-                max-height: 92vh;
-                border-radius: var(--radius-lg);
-            }
-
-            .modal-header {
-                padding: 20px;
-            }
-
-            .modal-body {
-                padding: 20px;
-            }
-
-            .footer-inner {
-                flex-direction: column;
-                text-align: center;
-            }
+            .hero-inner { padding: 40px 16px 60px; }
+            .hero-stats { gap: 28px; }
+            .hero-stat-num { font-size: 1.5rem; }
+            .books-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+            .list-view .book-card { flex-direction: column; }
+            .list-view .book-cover { width: 100%; min-width: unset; height: 140px; }
+            .modal-content { max-height: 92vh; border-radius: var(--radius-lg); }
+            .modal-header { padding: 20px; }
+            .modal-body { padding: 20px; }
+            .footer-inner { flex-direction: column; text-align: center; }
         }
-
-        @media (max-width: 480px) {
-            .books-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Reduced motion */
+        @media (max-width: 480px) { .books-grid { grid-template-columns: 1fr; } }
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-            html {
-                scroll-behavior: auto;
-            }
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="site-header" id="siteHeader">
         <div class="header-inner">
             <a href="#" class="logo" onclick="resetFilters(); return false;">
-                <div class="logo-icon">
-                    <i data-lucide="book-open"></i>
-                </div>
+                <div class="logo-icon">📖</div>
                 <div>
                     <div class="logo-text">Biblioteca Bíblica</div>
                     <div class="logo-sub">Centro de Recursos</div>
                 </div>
             </a>
-
             <div class="search-bar" id="searchBar">
-                <i data-lucide="search" class="search-icon"></i>
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Buscar libro, autor, tema..."
-                    autocomplete="off"
-                    aria-label="Buscar en la biblioteca"
-                >
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar libro, autor, tema..." autocomplete="off" aria-label="Buscar en la biblioteca">
             </div>
-
             <div class="header-actions">
-                <button class="btn-icon" id="searchToggle" aria-label="Buscar" title="Buscar">
-                    <i data-lucide="search"></i>
-                </button>
+                <button class="btn-icon" id="searchToggle" aria-label="Buscar" title="Buscar">🔍</button>
             </div>
         </div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
         <div class="hero-inner">
-            <div class="hero-badge">
-                <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
-                Recursos Gratuitos
-            </div>
+            <div class="hero-badge">✨ Recursos Gratuitos</div>
             <h1>Explora la <span class="accent">Palabra de Dios</span></h1>
             <p>Accede a una coleccion curada de libros biblicos, estudios, devocionales y recursos para el crecimiento espiritual.</p>
             <div class="hero-stats" id="heroStats">
@@ -1188,31 +464,21 @@
         </div>
     </section>
 
-    <!-- CATEGORÍAS -->
     <nav class="categories-nav" aria-label="Filtrar por categoria">
         <div class="categories-inner">
-            <div class="categories-scroll" id="categoriesScroll">
-                <!-- Se llena dinámicamente -->
-            </div>
+            <div class="categories-scroll" id="categoriesScroll"></div>
         </div>
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
         <div class="content-header">
             <div class="results-info" id="resultsInfo"></div>
             <div class="view-toggle">
-                <button class="view-btn active" id="gridViewBtn" aria-label="Vista cuadricula" title="Cuadricula">
-                    <i data-lucide="layout-grid"></i>
-                </button>
-                <button class="view-btn" id="listViewBtn" aria-label="Vista lista" title="Lista">
-                    <i data-lucide="list"></i>
-                </button>
+                <button class="view-btn active" id="gridViewBtn" aria-label="Cuadricula" title="Cuadricula">▦</button>
+                <button class="view-btn" id="listViewBtn" aria-label="Lista" title="Lista">☰</button>
             </div>
         </div>
-
         <div class="books-grid" id="booksGrid">
-            <!-- Estado de carga inicial -->
             <div class="loading-state" id="loadingState">
                 <div class="loading-spinner"></div>
                 <div class="state-title">Cargando biblioteca...</div>
@@ -1221,20 +487,17 @@
         </div>
     </main>
 
-    <!-- MODAL LECTOR -->
-    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title-group">
                     <div class="modal-title" id="modalTitle"></div>
                     <div class="modal-subtitle" id="modalSubtitle"></div>
                 </div>
-                <button class="modal-close" id="modalClose" aria-label="Cerrar">
-                    <i data-lucide="x"></i>
-                </button>
+                <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
             </div>
             <div class="modal-body" id="modalBody">
-                <div class="modal-loading" id="modalLoading">
+                <div class="modal-loading">
                     <div class="loading-spinner"></div>
                     <span>Cargando contenido...</span>
                 </div>
@@ -1246,272 +509,135 @@
         </div>
     </div>
 
-    <!-- TOASTS -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <div class="footer-text">
-                Biblioteca Biblica &mdash; Recursos para el crecimiento espiritual
-            </div>
-            <div class="footer-verse">
-                "Lámpara es a mis pies tu palabra, y lumbrera a mi camino." &mdash; Salmo 119:105
-            </div>
+            <div class="footer-text">Biblioteca Biblica &mdash; Recursos para el crecimiento espiritual</div>
+            <div class="footer-verse">"Lampara es a mis pies tu palabra, y lumbrera a mi camino." &mdash; Salmo 119:105</div>
         </div>
     </footer>
 
     <script>
-        /* =========================================
-           FUNCIÓN SEGURA PARA ÍCONOS
-           ========================================= */
-        function initIcons() {
-            try {
-                if (typeof lucide !== 'undefined' && lucide.createIcons) {
-                    lucide.createIcons();
-                }
-            } catch (e) {
-                // Si Lucide no carga, los íconos simplemente no aparecen
-                // pero la página sigue funcionando
-            }
-        }
+        var BASE_PATH = './';
+        var catalog = [];
+        var filteredBooks = [];
+        var activeCategory = 'Todos';
+        var searchQuery = '';
+        var viewMode = 'grid';
 
-        /* =========================================
-           CONFIGURACIÓN
-           ========================================= */
-        const BASE_PATH = './';
-
-        /* =========================================
-           DATOS POR DEFECTO
-           ========================================= */
-        const DEFAULT_CATALOG = [
-            {
-                id: "genesis",
-                titulo: "Génesis",
-                autor: "Moisés",
-                categoria: "Pentateuco",
-                descripcion: "El libro de los orígenes: la creación, la caída, el diluvio, los patriarcas y el inicio de la historia de Israel.",
-                archivo: "libros/genesis.html",
-                capitulos: 50,
-                testament: "Antiguo Testamento"
-            },
-            {
-                id: "exodo",
-                titulo: "Éxodo",
-                autor: "Moisés",
-                categoria: "Pentateuco",
-                descripcion: "La liberación de Israel de Egipto, el paso del Mar Rojo, la entrega de la Ley y la construcción del tabernáculo.",
-                archivo: "libros/exodo.html",
-                capitulos: 40,
-                testament: "Antiguo Testamento"
-            },
-            {
-                id: "salmos",
-                titulo: "Salmos",
-                autor: "David y otros",
-                categoria: "Poéticos",
-                descripcion: "El himnario de Israel: alabanzas, súplicas, lamentos y acciones de gracias ante Dios.",
-                archivo: "libros/salmos.html",
-                capitulos: 150,
-                testament: "Antiguo Testamento"
-            },
-            {
-                id: "proverbios",
-                titulo: "Proverbios",
-                autor: "Salomón y otros",
-                categoria: "Poéticos",
-                descripcion: "Sabiduría práctica para la vida diaria: consejos sobre conducta, relaciones, trabajo y el temor del Señor.",
-                archivo: "libros/proverbios.html",
-                capitulos: 31,
-                testament: "Antiguo Testamento"
-            },
-            {
-                id: "isaias",
-                titulo: "Isaías",
-                autor: "Isaías",
-                categoria: "Proféticos",
-                descripcion: "El profeta mesiánico: juicios contra las naciones, consuelo para Israel y profecías sobre el Mesías.",
-                archivo: "libros/isaias.html",
-                capitulos: 66,
-                testament: "Antiguo Testamento"
-            },
-            {
-                id: "mateo",
-                titulo: "Mateo",
-                autor: "Mateo (Leví)",
-                categoria: "Evangelios",
-                descripcion: "El evangelio del Rey: presenta a Jesús como el Mesías prometido con énfasis en el cumplimiento profético.",
-                archivo: "libros/mateo.html",
-                capitulos: 28,
-                testament: "Nuevo Testamento"
-            },
-            {
-                id: "juan",
-                titulo: "Juan",
-                autor: "Juan el apóstol",
-                categoria: "Evangelios",
-                descripcion: "El evangelio del Hijo de Dios: escrito para que creáis que Jesús es el Cristo y tengáis vida en su nombre.",
-                archivo: "libros/juan.html",
-                capitulos: 21,
-                testament: "Nuevo Testamento"
-            },
-            {
-                id: "romanos",
-                titulo: "Romanos",
-                autor: "Pablo",
-                categoria: "Epístolas",
-                descripcion: "La obra maestra de la teología paulina: justificación por fe, gracia, pecado y vida en el Espíritu.",
-                archivo: "libros/romanos.html",
-                capitulos: 16,
-                testament: "Nuevo Testamento"
-            },
-            {
-                id: "apocalipsis",
-                titulo: "Apocalipsis",
-                autor: "Juan el apóstol",
-                categoria: "Apocalíptico",
-                descripcion: "La revelación de Jesucristo: visiones proféticas sobre la iglesia, el juicio y la nueva creación.",
-                archivo: "libros/apocalipsis.html",
-                capitulos: 22,
-                testament: "Nuevo Testamento"
-            },
-            {
-                id: "devocional-manana",
-                titulo: "Devocional de Mañana",
-                autor: "Varios autores",
-                categoria: "Devocional",
-                descripcion: "Reflexiones diarias para comenzar el día con la Palabra de Dios y fortalecer la comunión con el Señor.",
-                archivo: "libros/devocional-manana.html",
-                capitulos: 30,
-                testament: "Devocional"
-            },
-            {
-                id: "guia-estudio-biblico",
-                titulo: "Guía de Estudio Bíblico",
-                autor: "Varios autores",
-                categoria: "Estudio",
-                descripcion: "Métodos y herramientas para el estudio profundo de la Biblia: contexto, palabra clave y aplicación.",
-                archivo: "libros/guia-estudio.html",
-                capitulos: 12,
-                testament: "Estudio"
-            },
-            {
-                id: "oracion-efeso",
-                titulo: "La Oración de Efesios",
-                autor: "Estudio basado en Pablo",
-                categoria: "Estudio",
-                descripcion: "Estudio profundo de las oraciones de Pablo en Efesios, revelando el corazón de Dios para su iglesia.",
-                archivo: "libros/oracion-efeso.html",
-                capitulos: 8,
-                testament: "Estudio"
-            }
+        var DEFAULT_CATALOG = [
+            { id: "genesis", titulo: "Genesis", autor: "Moises", categoria: "Pentateuco", descripcion: "El libro de los origenes: la creacion, la caida, el diluvio, los patriarcas y el inicio de la historia de Israel.", archivo: "libros/genesis.html", capitulos: 50, testament: "Antiguo Testamento" },
+            { id: "exodo", titulo: "Exodo", autor: "Moises", categoria: "Pentateuco", descripcion: "La liberacion de Israel de Egipto, el paso del Mar Rojo, la entrega de la Ley y la construccion del tabernaculo.", archivo: "libros/exodo.html", capitulos: 40, testament: "Antiguo Testamento" },
+            { id: "salmos", titulo: "Salmos", autor: "David y otros", categoria: "Poeticos", descripcion: "El himnario de Israel: alabanzas, suplicas, lamentos y acciones de gracias ante Dios.", archivo: "libros/salmos.html", capitulos: 150, testament: "Antiguo Testamento" },
+            { id: "proverbios", titulo: "Proverbios", autor: "Salomon y otros", categoria: "Poeticos", descripcion: "Sabiduria practica para la vida diaria: consejos sobre conducta, relaciones, trabajo y el temor del Senor.", archivo: "libros/proverbios.html", capitulos: 31, testament: "Antiguo Testamento" },
+            { id: "isaias", titulo: "Isaias", autor: "Isaias", categoria: "Profeticos", descripcion: "El profeta mesianico: juicios contra las naciones, consuelo para Israel y profecias sobre el Mesias.", archivo: "libros/isaias.html", capitulos: 66, testament: "Antiguo Testamento" },
+            { id: "mateo", titulo: "Mateo", autor: "Mateo (Levi)", categoria: "Evangelios", descripcion: "El evangelio del Rey: presenta a Jesus como el Mesias prometido con enfasis en el cumplimiento profetico.", archivo: "libros/mateo.html", capitulos: 28, testament: "Nuevo Testamento" },
+            { id: "juan", titulo: "Juan", autor: "Juan el apostol", categoria: "Evangelios", descripcion: "El evangelio del Hijo de Dios: escrito para que creais que Jesus es el Cristo y tengais vida en su nombre.", archivo: "libros/juan.html", capitulos: 21, testament: "Nuevo Testamento" },
+            { id: "romanos", titulo: "Romanos", autor: "Pablo", categoria: "Epistolas", descripcion: "La obra maestra de la teologia paulina: justificacion por fe, gracia, pecado y vida en el Espiritu.", archivo: "libros/romanos.html", capitulos: 16, testament: "Nuevo Testamento" },
+            { id: "apocalipsis", titulo: "Apocalipsis", autor: "Juan el apostol", categoria: "Apocaliptico", descripcion: "La revelacion de Jesucristo: visiones profeticas sobre la iglesia, el juicio y la nueva creacion.", archivo: "libros/apocalipsis.html", capitulos: 22, testament: "Nuevo Testamento" },
+            { id: "devocional-manana", titulo: "Devocional de Manana", autor: "Varios autores", categoria: "Devocional", descripcion: "Reflexiones diarias para comenzar el dia con la Palabra de Dios y fortalecer la comunion con el Senor.", archivo: "libros/devocional-manana.html", capitulos: 30, testament: "Devocional" },
+            { id: "guia-estudio-biblico", titulo: "Guia de Estudio Biblico", autor: "Varios autores", categoria: "Estudio", descripcion: "Metodos y herramientas para el estudio profundo de la Biblia: contexto, palabra clave y aplicacion.", archivo: "libros/guia-estudio.html", capitulos: 12, testament: "Estudio" },
+            { id: "oracion-efeso", titulo: "La Oracion de Efesios", autor: "Estudio basado en Pablo", categoria: "Estudio", descripcion: "Estudio profundo de las oraciones de Pablo en Efesios, revelando el corazon de Dios para su iglesia.", archivo: "libros/oracion-efeso.html", capitulos: 8, testament: "Estudio" }
         ];
 
-        /* =========================================
-           ESTADO
-           ========================================= */
-        let catalog = [];
-        let filteredBooks = [];
-        let activeCategory = 'Todos';
-        let searchQuery = '';
-        let viewMode = 'grid';
-
-        /* =========================================
-           INICIALIZACIÓN
-           ========================================= */
-        document.addEventListener('DOMContentLoaded', () => {
-            initIcons();
+        document.addEventListener('DOMContentLoaded', function() {
             loadCatalog();
             setupEventListeners();
         });
 
-        /* =========================================
-           CARGAR CATÁLOGO (con timeout de seguridad)
-           ========================================= */
-        async function loadCatalog() {
-            try {
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 5000);
-
-                const response = await fetch(BASE_PATH + 'catalogo.json', {
-                    signal: controller.signal
-                });
-                clearTimeout(timeout);
-
-                if (!response.ok) throw new Error('No encontrado');
-                catalog = await response.json();
-                showToast('Catálogo cargado correctamente', 'success');
-            } catch (err) {
-                console.warn('Usando catálogo por defecto:', err.message);
+        function loadCatalog() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', BASE_PATH + 'catalogo.json', true);
+            xhr.timeout = 4000;
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        catalog = JSON.parse(xhr.responseText);
+                        showToast('Catalogo cargado correctamente', 'success');
+                    } catch (e) {
+                        catalog = DEFAULT_CATALOG;
+                        showToast('Usando catalogo de ejemplo', 'success');
+                    }
+                } else {
+                    catalog = DEFAULT_CATALOG;
+                    showToast('Usando catalogo de ejemplo', 'success');
+                }
+                initApp();
+            };
+            xhr.onerror = function() {
                 catalog = DEFAULT_CATALOG;
-                showToast('Usando catálogo de ejemplo', 'success');
-            }
-            initApp();
+                showToast('Usando catalogo de ejemplo', 'success');
+                initApp();
+            };
+            xhr.ontimeout = function() {
+                catalog = DEFAULT_CATALOG;
+                showToast('Usando catalogo de ejemplo', 'success');
+                initApp();
+            };
+            xhr.send();
         }
 
-        /* =========================================
-           INICIALIZAR APP
-           ========================================= */
         function initApp() {
             updateStats();
             renderCategories();
             filterAndRender();
         }
 
-        /* =========================================
-           ESTADÍSTICAS
-           ========================================= */
         function updateStats() {
-            const categories = [...new Set(catalog.map(b => b.categoria))];
-            const authors = [...new Set(catalog.map(b => b.autor))];
+            var categoriesSet = {};
+            var authorsSet = {};
+            for (var i = 0; i < catalog.length; i++) {
+                categoriesSet[catalog[i].categoria] = true;
+                authorsSet[catalog[i].autor] = true;
+            }
+            var catCount = Object.keys(categoriesSet).length;
+            var authCount = Object.keys(authorsSet).length;
             animateCounter('statBooks', catalog.length);
-            animateCounter('statCategories', categories.length);
-            animateCounter('statAuthors', authors.length);
+            animateCounter('statCategories', catCount);
+            animateCounter('statAuthors', authCount);
         }
 
         function animateCounter(id, target) {
-            const el = document.getElementById(id);
+            var el = document.getElementById(id);
             if (!el) return;
-            let current = 0;
-            const step = Math.max(1, Math.floor(target / 20));
-            const interval = setInterval(() => {
+            var current = 0;
+            var step = Math.max(1, Math.floor(target / 20));
+            var interval = setInterval(function() {
                 current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(interval);
-                }
+                if (current >= target) { current = target; clearInterval(interval); }
                 el.textContent = current;
             }, 40);
         }
 
-        /* =========================================
-           CATEGORÍAS
-           ========================================= */
         function renderCategories() {
-            const container = document.getElementById('categoriesScroll');
-            const categories = ['Todos', ...new Set(catalog.map(b => b.categoria))];
-            container.innerHTML = categories.map(cat => {
-                const count = cat === 'Todos'
-                    ? catalog.length
-                    : catalog.filter(b => b.categoria === cat).length;
-                const isActive = cat === activeCategory;
-                return '<button class="cat-btn' + (isActive ? ' active' : '') + '" data-category="' + cat + '" aria-pressed="' + isActive + '">' + cat + '<span class="cat-count">' + count + '</span></button>';
-            }).join('');
+            var container = document.getElementById('categoriesScroll');
+            var catSet = {};
+            for (var i = 0; i < catalog.length; i++) { catSet[catalog[i].categoria] = true; }
+            var categories = ['Todos'];
+            for (var key in catSet) { categories.push(key); }
+
+            var html = '';
+            for (var j = 0; j < categories.length; j++) {
+                var cat = categories[j];
+                var count = cat === 'Todos' ? catalog.length : catalog.filter(function(b) { return b.categoria === cat; }).length;
+                var isActive = cat === activeCategory;
+                html += '<button class="cat-btn' + (isActive ? ' active' : '') + '" data-category="' + cat + '">' + cat + '<span class="cat-count">' + count + '</span></button>';
+            }
+            container.innerHTML = html;
         }
 
-        /* =========================================
-           FILTRAR Y RENDERIZAR
-           ========================================= */
         function filterAndRender() {
             filteredBooks = catalog.filter(function(book) {
-                var matchCategory = activeCategory === 'Todos' || book.categoria === activeCategory;
+                var matchCat = activeCategory === 'Todos' || book.categoria === activeCategory;
                 var q = searchQuery.toLowerCase().trim();
-                var matchSearch = !q ||
-                    book.titulo.toLowerCase().includes(q) ||
-                    book.autor.toLowerCase().includes(q) ||
-                    (book.descripcion && book.descripcion.toLowerCase().includes(q)) ||
-                    book.categoria.toLowerCase().includes(q);
-                return matchCategory && matchSearch;
+                if (!q) return matchCat;
+                return matchCat && (
+                    book.titulo.toLowerCase().indexOf(q) !== -1 ||
+                    book.autor.toLowerCase().indexOf(q) !== -1 ||
+                    (book.descripcion && book.descripcion.toLowerCase().indexOf(q) !== -1) ||
+                    book.categoria.toLowerCase().indexOf(q) !== -1
+                );
             });
             renderBooks();
             updateResultsInfo();
@@ -1520,36 +646,30 @@
         function renderBooks() {
             var grid = document.getElementById('booksGrid');
             if (filteredBooks.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><div class="state-title">No se encontraron resultados</div><div class="state-desc">Intenta con otra búsqueda o cambia la categoría</div><button class="btn-retry" onclick="resetFilters()">Ver todos los libros</button></div>';
+                grid.innerHTML = '<div class="empty-state"><div class="state-title">No se encontraron resultados</div><div class="state-desc">Intenta con otra busqueda o cambia la categoria</div><button class="btn-retry" onclick="resetFilters()">Ver todos los libros</button></div>';
                 return;
             }
-
             var html = '';
             for (var i = 0; i < filteredBooks.length; i++) {
                 var book = filteredBooks[i];
-                var coverClass = getCoverClass(book.categoria);
-                html += '<article class="book-card ' + coverClass + '" data-id="' + book.id + '" tabindex="0" role="button" aria-label="Leer ' + book.titulo + '">';
+                var cc = getCoverClass(book.categoria);
+                html += '<article class="book-card ' + cc + '" data-id="' + book.id + '" tabindex="0">';
                 html += '<div class="book-cover"><div class="book-cover-pattern"></div>';
                 html += '<span class="book-category-tag">' + book.categoria + '</span>';
                 html += '<div class="book-cover-icon">📖</div></div>';
                 html += '<div class="book-body">';
-                html += '<h3 class="book-title">' + highlightSearch(book.titulo) + '</h3>';
-                html += '<div class="book-author">' + highlightSearch(book.autor) + '</div>';
+                html += '<h3 class="book-title">' + book.titulo + '</h3>';
+                html += '<div class="book-author">' + book.autor + '</div>';
                 html += '<p class="book-desc">' + (book.descripcion || '') + '</p>';
                 html += '<div class="book-meta"><div style="display:flex;gap:12px;">';
-                if (book.capitulos) {
-                    html += '<span class="book-meta-item">📋 ' + book.capitulos + ' cap.</span>';
-                }
-                if (book.testament) {
-                    html += '<span class="book-meta-item">🔖 ' + book.testament + '</span>';
-                }
+                if (book.capitulos) html += '<span class="book-meta-item">📋 ' + book.capitulos + ' cap.</span>';
+                if (book.testament) html += '<span class="book-meta-item">🔖 ' + book.testament + '</span>';
                 html += '</div>';
-                html += '<button class="book-read-btn" onclick="event.stopPropagation(); openBook(\'' + book.id + '\')">Leer</button>';
+                html += '<button class="book-read-btn" onclick="event.stopPropagation();openBook(\'' + book.id + '\')">Leer</button>';
                 html += '</div></div></article>';
             }
             grid.innerHTML = html;
 
-            // Eventos en tarjetas
             var cards = grid.querySelectorAll('.book-card');
             for (var j = 0; j < cards.length; j++) {
                 (function(card) {
@@ -1563,25 +683,13 @@
 
         function getCoverClass(category) {
             var map = {
-                'Antiguo Testamento': 'cover-at',
-                'Pentateuco': 'cover-pentateuco',
-                'Históricos': 'cover-historicos',
-                'Poéticos': 'cover-poeticos',
-                'Proféticos': 'cover-profeticos',
-                'Evangelios': 'cover-evangelios',
-                'Epístolas': 'cover-epistolas',
-                'Apocalíptico': 'cover-apocaliptico',
-                'Devocional': 'cover-devocional',
-                'Estudio': 'cover-estudio'
+                'Antiguo Testamento': 'cover-at', 'Pentateuco': 'cover-pentateuco',
+                'Historicos': 'cover-historicos', 'Poeticos': 'cover-poeticos',
+                'Profeticos': 'cover-profeticos', 'Evangelios': 'cover-evangelios',
+                'Epistolas': 'cover-epistolas', 'Apocaliptico': 'cover-apocaliptico',
+                'Devocional': 'cover-devocional', 'Estudio': 'cover-estudio'
             };
             return map[category] || 'cover-default';
-        }
-
-        function highlightSearch(text) {
-            if (!searchQuery.trim()) return text;
-            var q = searchQuery.trim();
-            var regex = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-            return text.replace(regex, '<mark style="background:rgba(200,164,90,0.3);color:inherit;border-radius:2px;padding:0 1px;">$1</mark>');
         }
 
         function updateResultsInfo() {
@@ -1595,37 +703,41 @@
             }
         }
 
-        /* =========================================
-           MODAL LECTOR
-           ========================================= */
-        async function openBook(bookId) {
-            var book = catalog.find(function(b) { return b.id === bookId; });
+        function openBook(bookId) {
+            var book = null;
+            for (var i = 0; i < catalog.length; i++) {
+                if (catalog[i].id === bookId) { book = catalog[i]; break; }
+            }
             if (!book) { showToast('Libro no encontrado', 'error'); return; }
 
-            var overlay = document.getElementById('modalOverlay');
             document.getElementById('modalTitle').textContent = book.titulo;
             document.getElementById('modalSubtitle').textContent = book.autor + ' · ' + book.categoria;
-            document.getElementById('modalFooterInfo').textContent = book.capitulos ? book.capitulos + ' capítulos' : '';
+            document.getElementById('modalFooterInfo').textContent = book.capitulos ? book.capitulos + ' capitulos' : '';
             document.getElementById('modalBody').innerHTML = '<div class="modal-loading"><div class="loading-spinner"></div><span>Cargando contenido...</span></div>';
-
-            overlay.classList.add('visible');
+            document.getElementById('modalOverlay').classList.add('visible');
             document.body.style.overflow = 'hidden';
 
             if (book.archivo) {
-                try {
-                    var controller = new AbortController();
-                    var timeout = setTimeout(function() { controller.abort(); }, 5000);
-                    var response = await fetch(BASE_PATH + book.archivo, { signal: controller.signal });
-                    clearTimeout(timeout);
-                    if (!response.ok) throw new Error('No encontrado');
-                    var html = await response.text();
-                    document.getElementById('modalBody').innerHTML = '<div class="modal-body-text">' + html + '</div>';
-                } catch (err) {
-                    document.getElementById('modalBody').innerHTML = '<div class="empty-state" style="padding:40px 0;"><div class="state-title">Contenido no disponible</div><div class="state-desc">El archivo <strong>' + book.archivo + '</strong> no se encontró.<br><br>Crea este archivo en la carpeta <code style="background:var(--color-bg-warm);padding:2px 6px;border-radius:4px;">libros/</code> de tu repositorio.</div></div>';
-                }
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', BASE_PATH + book.archivo, true);
+                xhr.timeout = 5000;
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        document.getElementById('modalBody').innerHTML = '<div class="modal-body-text">' + xhr.responseText + '</div>';
+                    } else {
+                        showError(book.archivo);
+                    }
+                };
+                xhr.onerror = function() { showError(book.archivo); };
+                xhr.ontimeout = function() { showError(book.archivo); };
+                xhr.send();
             } else {
                 document.getElementById('modalBody').innerHTML = '<div class="empty-state" style="padding:40px 0;"><div class="state-title">Sin archivo asociado</div><div class="state-desc">' + (book.descripcion || 'Este recurso no tiene contenido.') + '</div></div>';
             }
+        }
+
+        function showError(archivo) {
+            document.getElementById('modalBody').innerHTML = '<div class="empty-state" style="padding:40px 0;"><div class="state-title">Contenido no disponible</div><div class="state-desc">El archivo <strong>' + archivo + '</strong> no se encontro.<br><br>Crea este archivo en la carpeta <code style="background:var(--color-bg-warm);padding:2px 6px;border-radius:4px;">libros/</code> de tu repositorio.</div></div>';
         }
 
         function closeModal() {
@@ -1633,9 +745,6 @@
             document.body.style.overflow = '';
         }
 
-        /* =========================================
-           FILTROS
-           ========================================= */
         function resetFilters() {
             activeCategory = 'Todos';
             searchQuery = '';
@@ -1645,9 +754,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* =========================================
-           TOAST
-           ========================================= */
         function showToast(message, type) {
             var container = document.getElementById('toastContainer');
             var toast = document.createElement('div');
@@ -1657,9 +763,6 @@
             setTimeout(function() { toast.remove(); }, 3200);
         }
 
-        /* =========================================
-           EVENT LISTENERS
-           ========================================= */
         function setupEventListeners() {
             var searchInput = document.getElementById('searchInput');
             var searchTimeout;
@@ -1709,14 +812,10 @@
 
             window.addEventListener('scroll', function() {
                 var header = document.getElementById('siteHeader');
-                if (window.scrollY > 10) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                if (window.scrollY > 10) { header.classList.add('scrolled'); }
+                else { header.classList.remove('scrolled'); }
             }, { passive: true });
         }
     </script>
-    
 </body>
 </html>
