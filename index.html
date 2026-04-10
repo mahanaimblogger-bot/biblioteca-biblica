@@ -1263,14 +1263,26 @@
 
     <script>
         /* =========================================
+           FUNCIÓN SEGURA PARA ÍCONOS
+           ========================================= */
+        function initIcons() {
+            try {
+                if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                    lucide.createIcons();
+                }
+            } catch (e) {
+                // Si Lucide no carga, los íconos simplemente no aparecen
+                // pero la página sigue funcionando
+            }
+        }
+
+        /* =========================================
            CONFIGURACIÓN
            ========================================= */
-        // Ruta base: usa './' para que funcione tanto en GitHub Pages
-        // como abriendo el archivo local directamente.
         const BASE_PATH = './';
 
         /* =========================================
-           DATOS POR DEFECTO (si no hay catalogo.json)
+           DATOS POR DEFECTO
            ========================================= */
         const DEFAULT_CATALOG = [
             {
@@ -1288,7 +1300,7 @@
                 titulo: "Éxodo",
                 autor: "Moisés",
                 categoria: "Pentateuco",
-                descripcion: "La liberación de Israel de Egipto, el paso del Mar Rojo, la entrega de la Ley en el Sinaí y la construcción del tabernáculo.",
+                descripcion: "La liberación de Israel de Egipto, el paso del Mar Rojo, la entrega de la Ley y la construcción del tabernáculo.",
                 archivo: "libros/exodo.html",
                 capitulos: 40,
                 testament: "Antiguo Testamento"
@@ -1298,7 +1310,7 @@
                 titulo: "Salmos",
                 autor: "David y otros",
                 categoria: "Poéticos",
-                descripcion: "El himnario de Israel: alabanzas, súplicas, lamentos y acciones de gracias que expresan la plenitud de la experiencia humana ante Dios.",
+                descripcion: "El himnario de Israel: alabanzas, súplicas, lamentos y acciones de gracias ante Dios.",
                 archivo: "libros/salmos.html",
                 capitulos: 150,
                 testament: "Antiguo Testamento"
@@ -1318,7 +1330,7 @@
                 titulo: "Isaías",
                 autor: "Isaías",
                 categoria: "Proféticos",
-                descripcion: "El profeta mesiánico por excelencia: juicios contra las naciones, consuelo para Israel y profecías sobre el Mesías venidero.",
+                descripcion: "El profeta mesiánico: juicios contra las naciones, consuelo para Israel y profecías sobre el Mesías.",
                 archivo: "libros/isaias.html",
                 capitulos: 66,
                 testament: "Antiguo Testamento"
@@ -1328,7 +1340,7 @@
                 titulo: "Mateo",
                 autor: "Mateo (Leví)",
                 categoria: "Evangelios",
-                descripcion: "El evangelio del Rey: presenta a Jesús como el Mesías prometido, con énfasis en el cumplimiento de las profecías del Antiguo Testamento.",
+                descripcion: "El evangelio del Rey: presenta a Jesús como el Mesías prometido con énfasis en el cumplimiento profético.",
                 archivo: "libros/mateo.html",
                 capitulos: 28,
                 testament: "Nuevo Testamento"
@@ -1338,7 +1350,7 @@
                 titulo: "Juan",
                 autor: "Juan el apóstol",
                 categoria: "Evangelios",
-                descripcion: "El evangelio del Hijo de Dios: escrito para que creáis que Jesús es el Cristo, el Hijo de Dios, y tengáis vida en su nombre.",
+                descripcion: "El evangelio del Hijo de Dios: escrito para que creáis que Jesús es el Cristo y tengáis vida en su nombre.",
                 archivo: "libros/juan.html",
                 capitulos: 21,
                 testament: "Nuevo Testamento"
@@ -1348,7 +1360,7 @@
                 titulo: "Romanos",
                 autor: "Pablo",
                 categoria: "Epístolas",
-                descripcion: "La obra maestra de la teología paulina: la justificación por fe, la gracia, el pecado, la vida en el Espíritu y el plan de Dios para Israel.",
+                descripcion: "La obra maestra de la teología paulina: justificación por fe, gracia, pecado y vida en el Espíritu.",
                 archivo: "libros/romanos.html",
                 capitulos: 16,
                 testament: "Nuevo Testamento"
@@ -1358,7 +1370,7 @@
                 titulo: "Apocalipsis",
                 autor: "Juan el apóstol",
                 categoria: "Apocalíptico",
-                descripcion: "La revelación de Jesucristo: visiones proféticas sobre la iglesia, el juicio, la victoria final de Cristo y la nueva creación.",
+                descripcion: "La revelación de Jesucristo: visiones proféticas sobre la iglesia, el juicio y la nueva creación.",
                 archivo: "libros/apocalipsis.html",
                 capitulos: 22,
                 testament: "Nuevo Testamento"
@@ -1368,7 +1380,7 @@
                 titulo: "Devocional de Mañana",
                 autor: "Varios autores",
                 categoria: "Devocional",
-                descripcion: "Reflexiones diarias para comenzar el día con la Palabra de Dios, fortaleciendo la comunión con el Señor.",
+                descripcion: "Reflexiones diarias para comenzar el día con la Palabra de Dios y fortalecer la comunión con el Señor.",
                 archivo: "libros/devocional-manana.html",
                 capitulos: 30,
                 testament: "Devocional"
@@ -1378,7 +1390,7 @@
                 titulo: "Guía de Estudio Bíblico",
                 autor: "Varios autores",
                 categoria: "Estudio",
-                descripcion: "Métodos y herramientas para el estudio profundo de la Biblia: análisis de contexto, palabra clave, estructura y aplicación práctica.",
+                descripcion: "Métodos y herramientas para el estudio profundo de la Biblia: contexto, palabra clave y aplicación.",
                 archivo: "libros/guia-estudio.html",
                 capitulos: 12,
                 testament: "Estudio"
@@ -1388,7 +1400,7 @@
                 titulo: "La Oración de Efesios",
                 autor: "Estudio basado en Pablo",
                 categoria: "Estudio",
-                descripcion: "Un estudio profundo de las oraciones de Pablo en la carta a los Efesios, revelando el corazón de Dios para su iglesia.",
+                descripcion: "Estudio profundo de las oraciones de Pablo en Efesios, revelando el corazón de Dios para su iglesia.",
                 archivo: "libros/oracion-efeso.html",
                 capitulos: 8,
                 testament: "Estudio"
@@ -1396,7 +1408,7 @@
         ];
 
         /* =========================================
-           ESTADO DE LA APLICACIÓN
+           ESTADO
            ========================================= */
         let catalog = [];
         let filteredBooks = [];
@@ -1408,23 +1420,28 @@
            INICIALIZACIÓN
            ========================================= */
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+            initIcons();
             loadCatalog();
             setupEventListeners();
         });
 
         /* =========================================
-           CARGAR CATÁLOGO
+           CARGAR CATÁLOGO (con timeout de seguridad)
            ========================================= */
         async function loadCatalog() {
             try {
-                // Intentar cargar catalogo.json
-                const response = await fetch(BASE_PATH + 'catalogo.json');
-                if (!response.ok) throw new Error('No se encontró catalogo.json');
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(BASE_PATH + 'catalogo.json', {
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+
+                if (!response.ok) throw new Error('No encontrado');
                 catalog = await response.json();
                 showToast('Catálogo cargado correctamente', 'success');
             } catch (err) {
-                // Usar datos por defecto
                 console.warn('Usando catálogo por defecto:', err.message);
                 catalog = DEFAULT_CATALOG;
                 showToast('Usando catálogo de ejemplo', 'success');
@@ -1447,7 +1464,6 @@
         function updateStats() {
             const categories = [...new Set(catalog.map(b => b.categoria))];
             const authors = [...new Set(catalog.map(b => b.autor))];
-
             animateCounter('statBooks', catalog.length);
             animateCounter('statCategories', categories.length);
             animateCounter('statAuthors', authors.length);
@@ -1469,121 +1485,84 @@
         }
 
         /* =========================================
-           RENDERIZAR CATEGORÍAS
+           CATEGORÍAS
            ========================================= */
         function renderCategories() {
             const container = document.getElementById('categoriesScroll');
             const categories = ['Todos', ...new Set(catalog.map(b => b.categoria))];
-
             container.innerHTML = categories.map(cat => {
                 const count = cat === 'Todos'
                     ? catalog.length
                     : catalog.filter(b => b.categoria === cat).length;
                 const isActive = cat === activeCategory;
-                return `
-                    <button class="cat-btn${isActive ? ' active' : ''}"
-                            data-category="${cat}"
-                            aria-pressed="${isActive}">
-                        ${cat}
-                        <span class="cat-count">${count}</span>
-                    </button>
-                `;
+                return '<button class="cat-btn' + (isActive ? ' active' : '') + '" data-category="' + cat + '" aria-pressed="' + isActive + '">' + cat + '<span class="cat-count">' + count + '</span></button>';
             }).join('');
         }
 
         /* =========================================
-           FILTRAR Y RENDERIZAR LIBROS
+           FILTRAR Y RENDERIZAR
            ========================================= */
         function filterAndRender() {
-            filteredBooks = catalog.filter(book => {
-                const matchCategory = activeCategory === 'Todos' || book.categoria === activeCategory;
-                const q = searchQuery.toLowerCase().trim();
-                const matchSearch = !q ||
+            filteredBooks = catalog.filter(function(book) {
+                var matchCategory = activeCategory === 'Todos' || book.categoria === activeCategory;
+                var q = searchQuery.toLowerCase().trim();
+                var matchSearch = !q ||
                     book.titulo.toLowerCase().includes(q) ||
                     book.autor.toLowerCase().includes(q) ||
                     (book.descripcion && book.descripcion.toLowerCase().includes(q)) ||
                     book.categoria.toLowerCase().includes(q);
                 return matchCategory && matchSearch;
             });
-
             renderBooks();
             updateResultsInfo();
         }
 
         function renderBooks() {
-            const grid = document.getElementById('booksGrid');
-
+            var grid = document.getElementById('booksGrid');
             if (filteredBooks.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <div class="state-icon">
-                            <i data-lucide="book-x"></i>
-                        </div>
-                        <div class="state-title">No se encontraron resultados</div>
-                        <div class="state-desc">Intenta con otra búsqueda o cambia la categoría</div>
-                        <button class="btn-retry" onclick="resetFilters()">Ver todos los libros</button>
-                    </div>
-                `;
-                lucide.createIcons();
+                grid.innerHTML = '<div class="empty-state"><div class="state-title">No se encontraron resultados</div><div class="state-desc">Intenta con otra búsqueda o cambia la categoría</div><button class="btn-retry" onclick="resetFilters()">Ver todos los libros</button></div>';
                 return;
             }
 
-            grid.innerHTML = filteredBooks.map(book => {
-                const coverClass = getCoverClass(book.categoria);
-                return `
-                    <article class="book-card ${coverClass}" data-id="${book.id}" tabindex="0"
-                             role="button" aria-label="Leer ${book.titulo}">
-                        <div class="book-cover">
-                            <div class="book-cover-pattern"></div>
-                            <span class="book-category-tag">${book.categoria}</span>
-                            <div class="book-cover-icon">
-                                <i data-lucide="book-open"></i>
-                            </div>
-                        </div>
-                        <div class="book-body">
-                            <h3 class="book-title">${highlightSearch(book.titulo)}</h3>
-                            <div class="book-author">${highlightSearch(book.autor)}</div>
-                            <p class="book-desc">${book.descripcion || ''}</p>
-                            <div class="book-meta">
-                                <div style="display:flex;gap:12px;">
-                                    ${book.capitulos ? `
-                                        <span class="book-meta-item">
-                                            <i data-lucide="layers"></i>
-                                            ${book.capitulos} cap.
-                                        </span>
-                                    ` : ''}
-                                    ${book.testament ? `
-                                        <span class="book-meta-item">
-                                            <i data-lucide="bookmark"></i>
-                                            ${book.testament}
-                                        </span>
-                                    ` : ''}
-                                </div>
-                                <button class="book-read-btn" onclick="event.stopPropagation(); openBook('${book.id}')">
-                                    Leer
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            }).join('');
+            var html = '';
+            for (var i = 0; i < filteredBooks.length; i++) {
+                var book = filteredBooks[i];
+                var coverClass = getCoverClass(book.categoria);
+                html += '<article class="book-card ' + coverClass + '" data-id="' + book.id + '" tabindex="0" role="button" aria-label="Leer ' + book.titulo + '">';
+                html += '<div class="book-cover"><div class="book-cover-pattern"></div>';
+                html += '<span class="book-category-tag">' + book.categoria + '</span>';
+                html += '<div class="book-cover-icon">📖</div></div>';
+                html += '<div class="book-body">';
+                html += '<h3 class="book-title">' + highlightSearch(book.titulo) + '</h3>';
+                html += '<div class="book-author">' + highlightSearch(book.autor) + '</div>';
+                html += '<p class="book-desc">' + (book.descripcion || '') + '</p>';
+                html += '<div class="book-meta"><div style="display:flex;gap:12px;">';
+                if (book.capitulos) {
+                    html += '<span class="book-meta-item">📋 ' + book.capitulos + ' cap.</span>';
+                }
+                if (book.testament) {
+                    html += '<span class="book-meta-item">🔖 ' + book.testament + '</span>';
+                }
+                html += '</div>';
+                html += '<button class="book-read-btn" onclick="event.stopPropagation(); openBook(\'' + book.id + '\')">Leer</button>';
+                html += '</div></div></article>';
+            }
+            grid.innerHTML = html;
 
-            lucide.createIcons();
-
-            // Eventos de click en tarjetas
-            grid.querySelectorAll('.book-card').forEach(card => {
-                card.addEventListener('click', () => openBook(card.dataset.id));
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openBook(card.dataset.id);
-                    }
-                });
-            });
+            // Eventos en tarjetas
+            var cards = grid.querySelectorAll('.book-card');
+            for (var j = 0; j < cards.length; j++) {
+                (function(card) {
+                    card.addEventListener('click', function() { openBook(card.dataset.id); });
+                    card.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBook(card.dataset.id); }
+                    });
+                })(cards[j]);
+            }
         }
 
         function getCoverClass(category) {
-            const map = {
+            var map = {
                 'Antiguo Testamento': 'cover-at',
                 'Pentateuco': 'cover-pentateuco',
                 'Históricos': 'cover-historicos',
@@ -1593,102 +1572,64 @@
                 'Epístolas': 'cover-epistolas',
                 'Apocalíptico': 'cover-apocaliptico',
                 'Devocional': 'cover-devocional',
-                'Estudio': 'cover-estudio',
+                'Estudio': 'cover-estudio'
             };
             return map[category] || 'cover-default';
         }
 
         function highlightSearch(text) {
             if (!searchQuery.trim()) return text;
-            const q = searchQuery.trim();
-            const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            var q = searchQuery.trim();
+            var regex = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
             return text.replace(regex, '<mark style="background:rgba(200,164,90,0.3);color:inherit;border-radius:2px;padding:0 1px;">$1</mark>');
         }
 
         function updateResultsInfo() {
-            const el = document.getElementById('resultsInfo');
-            const total = catalog.length;
-            const shown = filteredBooks.length;
-
+            var el = document.getElementById('resultsInfo');
+            var total = catalog.length;
+            var shown = filteredBooks.length;
             if (searchQuery || activeCategory !== 'Todos') {
-                el.innerHTML = `Mostrando <strong>${shown}</strong> de ${total} libros`;
+                el.innerHTML = 'Mostrando <strong>' + shown + '</strong> de ' + total + ' libros';
             } else {
-                el.innerHTML = `${total} libros disponibles`;
+                el.innerHTML = total + ' libros disponibles';
             }
         }
 
         /* =========================================
-           ABRIR LIBRO (MODAL)
+           MODAL LECTOR
            ========================================= */
         async function openBook(bookId) {
-            const book = catalog.find(b => b.id === bookId);
-            if (!book) {
-                showToast('Libro no encontrado', 'error');
-                return;
-            }
+            var book = catalog.find(function(b) { return b.id === bookId; });
+            if (!book) { showToast('Libro no encontrado', 'error'); return; }
 
-            const overlay = document.getElementById('modalOverlay');
-            const title = document.getElementById('modalTitle');
-            const subtitle = document.getElementById('modalSubtitle');
-            const body = document.getElementById('modalBody');
-            const footerInfo = document.getElementById('modalFooterInfo');
+            var overlay = document.getElementById('modalOverlay');
+            document.getElementById('modalTitle').textContent = book.titulo;
+            document.getElementById('modalSubtitle').textContent = book.autor + ' · ' + book.categoria;
+            document.getElementById('modalFooterInfo').textContent = book.capitulos ? book.capitulos + ' capítulos' : '';
+            document.getElementById('modalBody').innerHTML = '<div class="modal-loading"><div class="loading-spinner"></div><span>Cargando contenido...</span></div>';
 
-            title.textContent = book.titulo;
-            subtitle.textContent = `${book.autor} · ${book.categoria}`;
-            footerInfo.textContent = book.capitulos ? `${book.capitulos} capítulos` : '';
-
-            // Mostrar estado de carga
-            body.innerHTML = `
-                <div class="modal-loading">
-                    <div class="loading-spinner"></div>
-                    <span>Cargando contenido...</span>
-                </div>
-            `;
-
-            // Abrir modal
             overlay.classList.add('visible');
             document.body.style.overflow = 'hidden';
 
-            // Intentar cargar el archivo del libro
             if (book.archivo) {
                 try {
-                    const response = await fetch(BASE_PATH + book.archivo);
-                    if (!response.ok) throw new Error('Archivo no encontrado');
-                    const html = await response.text();
-                    body.innerHTML = `<div class="modal-body-text">${html}</div>`;
+                    var controller = new AbortController();
+                    var timeout = setTimeout(function() { controller.abort(); }, 5000);
+                    var response = await fetch(BASE_PATH + book.archivo, { signal: controller.signal });
+                    clearTimeout(timeout);
+                    if (!response.ok) throw new Error('No encontrado');
+                    var html = await response.text();
+                    document.getElementById('modalBody').innerHTML = '<div class="modal-body-text">' + html + '</div>';
                 } catch (err) {
-                    body.innerHTML = `
-                        <div class="empty-state" style="padding:40px 0;">
-                            <div class="state-icon">
-                                <i data-lucide="file-question"></i>
-                            </div>
-                            <div class="state-title">Contenido no disponible</div>
-                            <div class="state-desc">
-                                El archivo <strong>${book.archivo}</strong> no se encontró en el servidor.
-                                <br><br>
-                                Para agregar contenido, crea el archivo <code style="background:var(--color-bg-warm);padding:2px 6px;border-radius:4px;font-size:0.85em;">${book.archivo}</code> en tu repositorio.
-                            </div>
-                        </div>
-                    `;
-                    lucide.createIcons();
+                    document.getElementById('modalBody').innerHTML = '<div class="empty-state" style="padding:40px 0;"><div class="state-title">Contenido no disponible</div><div class="state-desc">El archivo <strong>' + book.archivo + '</strong> no se encontró.<br><br>Crea este archivo en la carpeta <code style="background:var(--color-bg-warm);padding:2px 6px;border-radius:4px;">libros/</code> de tu repositorio.</div></div>';
                 }
             } else {
-                body.innerHTML = `
-                    <div class="empty-state" style="padding:40px 0;">
-                        <div class="state-icon">
-                            <i data-lucide="file-text"></i>
-                        </div>
-                        <div class="state-title">Sin archivo asociado</div>
-                        <div class="state-desc">${book.descripcion || 'Este recurso no tiene un archivo de contenido asociado.'}</div>
-                    </div>
-                `;
-                lucide.createIcons();
+                document.getElementById('modalBody').innerHTML = '<div class="empty-state" style="padding:40px 0;"><div class="state-title">Sin archivo asociado</div><div class="state-desc">' + (book.descripcion || 'Este recurso no tiene contenido.') + '</div></div>';
             }
         }
 
         function closeModal() {
-            const overlay = document.getElementById('modalOverlay');
-            overlay.classList.remove('visible');
+            document.getElementById('modalOverlay').classList.remove('visible');
             document.body.style.overflow = '';
         }
 
@@ -1707,84 +1648,75 @@
         /* =========================================
            TOAST
            ========================================= */
-        function showToast(message, type = '') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
+        function showToast(message, type) {
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast ' + (type || '');
             toast.textContent = message;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3200);
+            setTimeout(function() { toast.remove(); }, 3200);
         }
 
         /* =========================================
            EVENT LISTENERS
            ========================================= */
         function setupEventListeners() {
-            // Búsqueda
-            const searchInput = document.getElementById('searchInput');
-            let searchTimeout;
-            searchInput.addEventListener('input', () => {
+            var searchInput = document.getElementById('searchInput');
+            var searchTimeout;
+            searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
+                searchTimeout = setTimeout(function() {
                     searchQuery = searchInput.value;
                     filterAndRender();
                 }, 250);
             });
 
-            // Toggle búsqueda móvil
-            document.getElementById('searchToggle').addEventListener('click', () => {
-                const bar = document.getElementById('searchBar');
+            document.getElementById('searchToggle').addEventListener('click', function() {
+                var bar = document.getElementById('searchBar');
                 bar.classList.toggle('mobile-visible');
-                if (bar.classList.contains('mobile-visible')) {
-                    searchInput.focus();
-                }
+                if (bar.classList.contains('mobile-visible')) searchInput.focus();
             });
 
-            // Categorías (delegación de eventos)
-            document.getElementById('categoriesScroll').addEventListener('click', (e) => {
-                const btn = e.target.closest('.cat-btn');
+            document.getElementById('categoriesScroll').addEventListener('click', function(e) {
+                var btn = e.target.closest('.cat-btn');
                 if (!btn) return;
                 activeCategory = btn.dataset.category;
                 renderCategories();
                 filterAndRender();
             });
 
-            // Vista cuadrícula / lista
-            document.getElementById('gridViewBtn').addEventListener('click', () => {
+            document.getElementById('gridViewBtn').addEventListener('click', function() {
                 viewMode = 'grid';
                 document.getElementById('booksGrid').classList.remove('list-view');
                 document.getElementById('gridViewBtn').classList.add('active');
                 document.getElementById('listViewBtn').classList.remove('active');
             });
 
-            document.getElementById('listViewBtn').addEventListener('click', () => {
+            document.getElementById('listViewBtn').addEventListener('click', function() {
                 viewMode = 'list';
                 document.getElementById('booksGrid').classList.add('list-view');
                 document.getElementById('listViewBtn').classList.add('active');
                 document.getElementById('gridViewBtn').classList.remove('active');
             });
 
-            // Cerrar modal
             document.getElementById('modalClose').addEventListener('click', closeModal);
-            document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            document.getElementById('modalOverlay').addEventListener('click', function(e) {
                 if (e.target === e.currentTarget) closeModal();
             });
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeModal();
             });
 
-            // Header scroll effect
-            let lastScroll = 0;
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', function() {
+                var header = document.getElementById('siteHeader');
                 if (window.scrollY > 10) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
-                lastScroll = window.scrollY;
             }, { passive: true });
         }
     </script>
+    
 </body>
 </html>
