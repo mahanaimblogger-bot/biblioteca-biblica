@@ -1,0 +1,15 @@
+{
+  "tipo": "estudio",
+  "titulo": "Nacer de Nuevo",
+  "subtitulo": "El diálogo de Jesús con Nicodemo",
+  "autor": "Aula de Mahanaim",
+  "fechaCreacion": "2025-03-15",
+  "fechaActualizacion": "2025-04-10",
+  "versiculoClave": {
+    "referencia": "Juan 3:3",
+    "texto": "Respondió Jesús y le dijo: De cierto, de cierto te digo, que el que no naciere de nuevo, no puede ver el reino de Dios."
+  },
+  "temas": ["Nuevo nacimiento", "Regeneración", "Fe", "Salvación", "Nicodemo"],
+  "archivoContenido": "contenido.html",
+  "disponible": true
+}

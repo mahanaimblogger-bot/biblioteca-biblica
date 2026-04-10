@@ -1,0 +1,16 @@
+{
+  "tipo": "estudio",
+  "titulo": "Estudio Integral de Génesis 13",
+  "subtitulo": "Dos Caminos, Dos Destinos",
+  "autor": "Aula de Mahanaim",
+  "fechaCreacion": "2025-03-10",
+  "fechaActualizacion": "2025-04-10",
+  "versiculoClave": {
+    "referencia": "Génesis 13:14-15",
+    "texto": "Alza ahora tus ojos, y mira desde el lugar donde estás hacia el norte y el sur, y al oriente y al occidente. Porque toda la tierra que ves, la daré a ti y a tu descendencia para siempre."
+  },
+  "temas": ["Abram y Lot", "Fe vs. Vista", "Decisiones espirituales", "El pacto", "Hebrón"],
+  "enlacePDF": "https://drive.google.com/file/d/1yPRh6s8sedBUecMS7DzTiDcO8FD0Rvd7/view?usp=drive_link",
+  "archivoContenido": "contenido.html",
+  "disponible": true
+}

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro de Recursos Bíblicos — Sistema Modular</title>
+<link href="https://fonts.googleapis.com/css2?family=Georgia&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    /* =========================================
+       VARIABLES Y RESET
+       ========================================= */
+    :root {
+        --color-primary: #1a5276;
+        --color-secondary: #2d4a6c;
+        --color-accent: #d4ac0d;
+        --color-bg: #f4f6f8;
+        --font-serif: 'Georgia', serif;
+        --font-sans: 'Roboto', sans-serif;
+        --base-path: './biblioteca-biblica/' /* Ajustar según ubicación */
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--color-bg);
+        font-family: var(--font-sans);
+        color: #333;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* =========================================
+       LAYOUT PRINCIPAL
+       ========================================= */
+    #bsa-app {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Loading */
+    .loading-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(255,255,255,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+    .loading-spinner {
+        width: 50px; height: 50px;
+        border: 4px solid #e0e0e0;
+        border-top-color: var(--color-accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* =========================================
+       COMPONENTES DE UI
+       ========================================= */
+    
+    .bsa-header {
+        background: linear-gradient(135deg, #1a3a5c, #2d4a6c);
+        border-radius: 12px;
+        padding: 40px 30px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 8px 30px rgba(26,58,92,0.25);
+        border: 2px solid rgba(212,172,13,0.2);
+    }
+    .bsa-header h1 {
+        color: #fff;
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        margin: 10px 0 5px 0;
+    }
+    .bsa-header p {
+        color: rgba(255,255,255,0.8);
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .bsa-breadcrumb {
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .bsa-breadcrumb a {
+        color: var(--color-primary);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--color-accent);
+        transition: color 0.2s;
+        cursor: pointer;
+    }
+    .bsa-breadcrumb a:hover { color: var(--color-accent); }
+    .bsa-breadcrumb .sep { color: #999; }
+    .bsa-breadcrumb .current { color: #777; font-weight: 500; }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: none;
+        border: 1px solid #ccc;
+        color: var(--color-primary);
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 20px;
+        font-family: var(--font-sans);
+    }
+    .btn-back:hover {
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+        background: rgba(212, 172, 13, 0.05);
+    }
+
+    /* Vista 1: Grid de Libros */
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    .book-card {
+        background: #fff;
+        border: 2px solid #e8e8e8;
+        border-radius: 10px;
+        padding: 25px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .book-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, #1a3a5c, #d4ac0d);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+    }
+    .book-card:hover {
+        border-color: var(--color-accent);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(26,58,92,0.1);
+    }
+    .book-card:hover::before { transform: scaleX(1); }
+    .book-name { font-size: 1.2rem; font-weight: bold; color: var(--color-primary); font-family: var(--font-serif); margin-bottom: 5px; }
+    .book-count { font-size: 0.9rem; color: #777; }
+
+    /* Vista 2: Lista de Capítulos */
+    .chapter-list { display: flex; flex-direction: column; gap: 15px; }
+    .chapter-card {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: #fff;
+        border: 2px solid #e8e8e8;
+        border-radius: 10px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+    .chapter-card:hover {
+        border-color: var(--color-accent);
+        transform: translateX(5px);
+        box-shadow: 0 4px 15px rgba(26,58,92,0.08);
+    }
+    .chapter-num {
+        flex-shrink: 0;
+        width: 50px; height: 50px;
+        background: linear-gradient(135deg, #1a3a5c, #2d4a6c);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--color-accent);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    .chapter-info h3 { margin: 0 0 5px 0; color: var(--color-primary); font-family: var(--font-serif); }
+    .chapter-info p { margin: 0; font-size: 0.9rem; color: #777; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .tag {
+        font-size: 0.75rem;
+        background: #eef2f5;
+        color: var(--color-primary);
+        padding: 3px 8px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .tag-disponible { background: #e8f5e9; color: #2e7d32; }
+    .tag-no-disponible { background: #f5f5f5; color: #bbb; text-decoration: line-through; }
+
+    /* Vista 3: Grid de Recursos — SIEMPRE 6 tarjetas */
+    .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+    .resource-card {
+        background: #fff;
+        border: 2px solid #e8e8e8;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        position: relative;
+    }
+    .resource-card:not(.disabled):hover {
+        border-color: var(--color-accent);
+        box-shadow: 0 10px 30px rgba(26,58,92,0.12);
+        transform: translateY(-5px);
+    }
+    .resource-card .res-icon { font-size: 3rem; line-height: 1; }
+    .resource-card .res-title { font-size: 1.1rem; font-weight: bold; color: var(--color-primary); font-family: var(--font-serif); margin: 0; line-height: 1.3; }
+    .resource-card .res-type {
+        font-size: 0.75rem;
+        color: #fff;
+        background: var(--color-primary);
+        padding: 4px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 5px;
+    }
+
+    /* Tarjeta deshabilitada (recurso no disponible) */
+    .resource-card.disabled {
+        background: #f9f9f9;
+        border: 2px dashed #d5d5d5;
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+    .resource-card.disabled .res-icon {
+        filter: grayscale(100%);
+        opacity: 0.4;
+    }
+    .resource-card.disabled .res-title {
+        color: #aaa;
+        text-decoration: line-through;
+    }
+    .resource-card.disabled .res-type {
+        background: #bbb;
+        color: #fff;
+    }
+    .resource-card .res-msg-no-disponible {
+        font-size: 0.8rem;
+        color: #999;
+        font-style: italic;
+        margin-top: 4px;
+        line-height: 1.4;
+    }
+    .resource-card .res-badge-disponible {
+        font-size: 0.7rem;
+        color: #2e7d32;
+        background: #e8f5e9;
+        padding: 2px 10px;
+        border-radius: 10px;
+        margin-top: 4px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    /* Vista 4: Contenedor del Estudio */
+    .contenedor-blog {
+        color: #333;
+        font-family: Georgia, serif;
+        font-size: 17px;
+        line-height: 1.8;
+        text-align: justify;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .imagen-portada { background-color: #1a5276; clear: both; margin: 25px auto; padding: 35px; text-align: center; border-radius: 4px; }
+    .imagen-portada img { border: 3px solid rgb(212, 172, 13); box-shadow: rgba(0, 0, 0, 0.4) 0px 10px 30px; height: auto; max-width: 100%; }
+    h1.titulo-entrada { border-bottom: 2px solid rgb(212, 172, 13); color: #1a5276; font-size: 30px; padding-bottom: 10px; text-align: center; margin-top: 20px; }
+    h2.subtitulo { border-bottom: 1px solid rgb(212, 172, 13); color: #1a5276; margin-top: 40px; margin-bottom: 15px; }
+    .cita-versiculo { background-color: #fef9e7; border-left: 5px solid rgb(212, 172, 13); border-radius: 4px; margin: 25px 0px; padding: 20px; }
+    .cita-versiculo h3 { color: #b7950b; margin-top: 0px; font-size: 1.1em; }
+    .cita-versiculo p { font-size: 18px; font-style: italic; margin-bottom: 0px; }
+    .caja-contexto { background: linear-gradient(135deg, #f0f5fa 0%, #e5ecf5 100%); border: 2px solid #4682b4; border-radius: 10px; margin: 25px 0; padding: 25px; font-size: 0.95em; }
+    .caja-contexto h3 { color: #1a3a5c; margin: 0 0 15px 0; font-size: 1.2em; text-align: center; border-bottom: 1px solid #4682b4; padding-bottom: 10px; }
+    .caja-contexto strong { color: #1a3a5c; }
+    .caja-contexto ul { list-style: none; margin: 0; padding: 0; }
+    .caja-contexto li { margin-bottom: 8px; padding-left: 0; }
+    .caja-linguistica { background: linear-gradient(135deg, #fdf6e3, #f5ecd7); border-left: 5px solid #b8860b; border-radius: 0 8px 8px 0; margin: 20px 0; padding: 18px 20px; }
+    .caja-linguistica h4 { color: #8b6914; margin: 0 0 10px 0; font-size: 1.05em; }
+    .caja-linguistica p { margin: 5px 0; font-size: .97em; }
+    .caja-linguistica .palabra-original { font-size: 1.15em; color: #1a3a5c; font-weight: bold; background: rgba(184,134,11,.12); padding: 3px 10px; border-radius: 4px; display: inline-block; margin: 5px 0; direction: rtl; }
+    .destacado-dramatico { background: linear-gradient(135deg, #1a3a5c, #2d4a6c); color: #fff; padding: 25px 30px; border-radius: 8px; margin: 30px 0; text-align: center; font-size: 1.1em; font-weight: bold; line-height: 1.7; border: 2px solid #d4ac0d; box-shadow: 0 5px 20px rgba(0,0,0,.3); }
+    .caja-meditar { background: linear-gradient(135deg, #fef9e7, #fdebd0); border: 2px solid #d4ac0d; border-radius: 8px; margin: 30px 0; padding: 25px; position: relative; }
+    .caja-meditar::before { content: "🙏"; font-size: 2em; position: absolute; top: -15px; left: 25px; background: #fef9e7; padding: 0 10px; }
+    .caja-meditar h3 { color: #b7950b; margin-top: 10px; margin-bottom: 15px; font-size: 1.2em; text-align: center; }
+    .caja-meditar ul { margin-left: 15px; }
+    .caja-meditar li { margin-bottom: 12px; line-height: 1.7; }
+    .separador { text-align: center; margin: 35px 0; color: #d4ac0d; font-size: 1.5em; letter-spacing: 8px; }
+    ul { list-style-type: square; margin-left: 20px; }
+    .destacado { background-color: #fff8dc; border: 1px solid #c9a227; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    .versiculo { background: linear-gradient(135deg, #f5f0e1 0%, #e8e0c8 100%); border-left: 5px solid #c9a227; padding: 15px 20px; margin: 20px 0; font-style: italic; color: #3d3d3d; }
+    .aplicacion { background-color: #f5f0e1; border: 1px solid #8b7355; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
+    th { background-color: #1a3a5c; color: #ffffff; padding: 12px 10px; text-align: left; font-family: 'Arial', sans-serif; }
+    td { padding: 10px; border-bottom: 1px solid #d0d0d0; vertical-align: top; }
+    tr:nth-child(even) { background-color: #f5f5f5; }
+    tr:hover { background-color: #e8e8e8; }
+    
+    .contenedor-video { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin: 30px 0; border: 3px solid rgb(212,172,13); box-shadow: rgba(0,0,0,.3) 0 8px 20px; background: #000; cursor: pointer; border-radius: 4px;}
+    .contenedor-video img.miniatura { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .contenedor-video .btn-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68px; height: 48px; background: rgba(212, 172, 13, 0.9); border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s; z-index: 5; }
+    .contenedor-video .btn-play:hover { background: rgba(212, 172, 13, 1); transform: translate(-50%, -50%) scale(1.1); }
+    .contenedor-video .btn-play::after { content: ''; border-style: solid; border-width: 11px 0 11px 20px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
+    #player-container iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; }
+
+    .indice-nav { background: linear-gradient(135deg, #1a3a5c 0%, #2d4a6c 100%); color: #ffffff; padding: 25px 30px; margin-bottom: 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(26, 58, 92, 0.3); }
+    .indice-nav h3 { color: #d4ac0d; margin-top: 0; margin-bottom: 18px; font-size: 1.3em; font-family: Georgia, serif; text-align: center; border-bottom: 1px solid rgba(212, 172, 13, 0.4); padding-bottom: 12px; }
+    .indice-nav ul { margin: 0; padding: 0; list-style: none; }
+    .indice-nav a { color: #ffffff; text-decoration: none; display: block; padding: 5px 0; border-bottom: 1px dotted rgba(255,255,255,0.3); transition: all 0.3s ease; font-size: 0.95em; }
+    .indice-nav a:hover { color: #d4ac0d; padding-left: 10px; }
+    
+    .volver-indice { display: inline-block; text-align: right; color: #1a5276; text-decoration: none; font-size: 0.9em; margin-top: 35px; margin-bottom: 25px; font-weight: 600; font-family: Georgia, serif; border-top: 1px dotted #d4ac0d; padding-top: 12px; transition: all 0.3s ease; width: 100%; cursor: pointer;}
+    .volver-indice:hover { color: #d4ac0d; }
+
+    .btn-descargar-pdf {
+        display: inline-block;
+        background: linear-gradient(135deg, #1a3a5c 0%, #2d4a6c 100%);
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        font-size: 1em;
+        font-weight: bold;
+        padding: 14px 35px;
+        border-radius: 30px;
+        text-decoration: none;
+        border: 2px solid #c9a227;
+        box-shadow: 0 4px 15px rgba(26, 58, 92, 0.3);
+        transition: all 0.3s ease;
+    }
+    .btn-descargar-pdf:hover {
+        background: linear-gradient(135deg, #c9a227 0%, #d4b84a 100%);
+        color: #1a3a5c;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+    }
+
+    .hebreo { font-family: 'Times New Roman', serif; font-size: 1.1em; color: #1a3a5c; background-color: #f8f8f8; padding: 8px 12px; border-radius: 4px; direction: rtl; text-align: right; }
+
+    /* Error message */
+    .error-message {
+        background: #fff3f3;
+        border: 2px solid #e74c3c;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        margin: 20px 0;
+    }
+    .error-message h3 { color: #e74c3c; margin-bottom: 15px; }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+        .bsa-header h1 { font-size: 1.5rem; }
+        .contenedor-blog { padding: 20px; }
+        h1.titulo-entrada { font-size: 24px; }
+        .destacado-dramatico { padding: 18px 15px; font-size: 1em; }
+        .resources-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .resource-card { padding: 20px 12px; }
+        .resource-card .res-icon { font-size: 2.2rem; }
+        .resource-card .res-title { font-size: 0.95rem; }
+        table { font-size: 0.8em; }
+        th, td { padding: 6px; }
+    }
+</style>
+</head>
+<body>
+
+<div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-spinner"></div>
+</div>
+
+<div id="bsa-app">
+    <header class="bsa-header">
+        <div style="font-size: 2.5em; margin-bottom: 5px;">📖</div>
+        <h1>Centro de Recursos Bíblicos</h1>
+        <p>Estudios, sermones y comentarios exegéticos — Sistema Modular</p>
+    </header>
+    <nav class="bsa-breadcrumb" id="breadcrumb">
+        <span class="current">Cargando...</span>
+    </nav>
+    <main id="main-content">
+        <div style="text-align: center; padding: 50px;">
+            <div class="loading-spinner" style="margin: 0 auto;"></div>
+            <p style="margin-top: 20px; color: #777;">Cargando biblioteca...</p>
+        </div>
+    </main>
+</div>
+
+<script>
+    /* ==================================================
+       CONFIGURACIÓN Y CONSTANTES
+       ================================================== */
+    const CONFIG = {
+        basePath: './biblioteca-biblica/', // Ruta base a la carpeta de la biblioteca
+        catalogFile: 'catalogo.json'
+    };
+
+    // Tipos de recursos disponibles (siempre se muestran las 6 tarjetas)
+    const resourceTypes = [
+        { key: 'estudio',      icon: '📖', label: 'Estudio' },
+        { key: 'sermon',       icon: '🛐', label: 'Sermón' },
+        { key: 'video',        icon: '🎬', label: 'Video' },
+        { key: 'audio',        icon: '🎧', label: 'Audio' },
+        { key: 'diapositiva',  icon: '📊', label: 'Diapositivas' },
+        { key: 'pdf',          icon: '📄', label: 'PDF' }
+    ];
+
+    /* ==================================================
+       ESTADO DE LA APLICACIÓN
+       ================================================== */
+    let catalog = null;
+    let currentView = 'books';
+    let selectedBook = null;
+    let selectedChapter = null;
+    let selectedResource = null;
+    let resourceMetadataCache = {};
+
+    const mainContent = document.getElementById('main-content');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const loadingOverlay = document.getElementById('loading-overlay');
+
+    /* ==================================================
+       FUNCIONES DE UTILIDAD
+       ================================================== */
+    
+    function showLoading() {
+        loadingOverlay.style.display = 'flex';
+    }
+
+    function hideLoading() {
+        loadingOverlay.style.display = 'none';
+    }
+
+    async function fetchJSON(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            console.error(`Error cargando ${url}:`, error);
+            throw error;
+        }
+    }
+
+    async function fetchHTML(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.text();
+        } catch (error) {
+            console.error(`Error cargando ${url}:`, error);
+            throw error;
+        }
+    }
+
+    function getBookPath(bookId) {
+        return `${CONFIG.basePath}libros/${bookId}/`;
+    }
+
+    function getChapterPath(bookId, chapterNum) {
+        return `${getBookPath(bookId)}capitulo-${chapterNum}/`;
+    }
+
+    function getResourcePath(bookId, chapterNum, resourceType) {
+        return `${getChapterPath(bookId, chapterNum)}${resourceType}/`;
+    }
+
+    /* ==================================================
+       INICIALIZACIÓN
+       ================================================== */
+    async function init() {
+        try {
+            catalog = await fetchJSON(CONFIG.basePath + CONFIG.catalogFile);
+            renderBooks();
+            updateBreadcrumb();
+        } catch (error) {
+            showError('No se pudo cargar el catálogo de la biblioteca. Verifica que los archivos estén en la ubicación correcta.');
+        }
+    }
+
+    /* ==================================================
+       VISTA: LIBROS
+       ================================================== */
+    function renderBooks() {
+        currentView = 'books';
+        selectedBook = null;
+        selectedChapter = null;
+        selectedResource = null;
+
+        let html = '<div class="books-grid fade-in">';
+        catalog.libros.forEach((book) => {
+            let totalRes = 0;
+            book.capitulos.forEach(cap => totalRes += cap.recursos.length);
+            html += `<div class="book-card" onclick="selectBook('${book.id}')">
+                <div class="book-name">${book.nombre}</div>
+                <div class="book-count"><strong>${totalRes}</strong> recursos</div>
+            </div>`;
+        });
+        html += '</div>';
+        mainContent.innerHTML = html;
+        updateBreadcrumb();
+    }
+
+    /* ==================================================
+       VISTA: CAPÍTULOS
+       ================================================== */
+    async function selectBook(bookId) {
+        showLoading();
+        try {
+            selectedBook = catalog.libros.find(b => b.id === bookId);
+            if (!selectedBook) throw new Error('Libro no encontrado');
+            
+            selectedChapter = null;
+            currentView = 'chapters';
+            await renderChaptersView();
+        } catch (error) {
+            hideLoading();
+            showError('Error al cargar los capítulos del libro.');
+        }
+    }
+
+    async function renderChaptersView() {
+        let html = '<div class="chapter-list fade-in">';
+        
+        for (const cap of selectedBook.capitulos) {
+            const chapterPath = getChapterPath(selectedBook.id, cap.numero);
+            
+            html += `<div class="chapter-card" onclick="selectChapter(${cap.numero})">
+                <div class="chapter-num">${cap.numero}</div>
+                <div class="chapter-info">
+                    <h3>Capítulo ${cap.numero}</h3>
+                    <p>${cap.recursos.length} recurso${cap.recursos.length !== 1 ? 's' : ''} disponible${cap.recursos.length !== 1 ? 's' : ''}</p>
+                    <div class="tags">`;
+            
+            // Mostrar tags de tipos de recursos
+            resourceTypes.forEach(rt => {
+                if (cap.recursos.includes(rt.key)) {
+                    html += `<span class="tag tag-disponible">${rt.icon} ${rt.label}</span>`;
+                } else {
+                    html += `<span class="tag tag-no-disponible">${rt.icon} ${rt.label}</span>`;
+                }
+            });
+            
+            html += `</div>
+                </div>
+            </div>`;
+        }
+        
+        html += '</div>';
+        mainContent.innerHTML = html;
+        currentView = 'chapters';
+        updateBreadcrumb();
+        hideLoading();
+    }
+
+    /* ==================================================
+       VISTA: RECURSOS (SIEMPRE 6 TARJETAS)
+       ================================================== */
+    async function selectChapter(chapterNum) {
+        showLoading();
+        try {
+            selectedChapter = selectedBook.capitulos.find(c => c.numero === chapterNum);
+            if (!selectedChapter) throw new Error('Capítulo no encontrado');
+            
+            currentView = 'resources';
+            await renderResourcesView();
+        } catch (error) {
+            hideLoading();
+            showError('Error al cargar los recursos del capítulo.');
+        }
+    }
+
+    async function renderResourcesView() {
+        // Cargar metadatos de todos los recursos disponibles
+        const recursosConMetadatos = {};
+        
+        for (const tipoRecurso of selectedChapter.recursos) {
+            try {
+                const metadataPath = getResourcePath(selectedBook.id, selectedChapter.numero, tipoRecurso) + 'metadata.json';
+                const metadata = await fetchJSON(metadataPath);
+                recursosConMetadatos[tipoRecurso] = metadata;
+                // Guardar en caché
+                resourceMetadataCache[`${selectedBook.id}-${selectedChapter.numero}-${tipoRecurso}`] = metadata;
+            } catch (error) {
+                console.warn(`No se pudo cargar metadata para ${tipoRecurso}`);
+            }
+        }
+
+        let html = `
+            <button class="btn-back" onclick="backToChapters()">← Volver a Capítulos</button>
+            <h2 style="text-align:center; color:var(--color-primary); margin-bottom:30px; font-family:var(--font-serif);">${selectedBook.nombre} — Capítulo ${selectedChapter.numero}</h2>
+            <div class="resources-grid fade-in">
+        `;
+
+        resourceTypes.forEach(rt => {
+            if (recursosConMetadatos[rt.key]) {
+                // RECURSO DISPONIBLE
+                const res = recursosConMetadatos[rt.key];
+                html += `
+                    <div class="resource-card" onclick="openResource('${rt.key}')">
+                        <div class="res-icon">${rt.icon}</div>
+                        <div class="res-title">${res.titulo}</div>
+                        <div class="res-type">${rt.label}</div>
+                        <span class="res-badge-disponible">✓ Disponible</span>
+                    </div>
+                `;
+            } else {
+                // RECURSO NO DISPONIBLE
+                html += `
+                    <div class="resource-card disabled">
+                        <div class="res-icon">${rt.icon}</div>
+                        <div class="res-title">${rt.label}</div>
+                        <div class="res-type">${rt.label}</div>
+                        <span class="res-msg-no-disponible">Próximamente disponible</span>
+                    </div>
+                `;
+            }
+        });
+
+        html += '</div>';
+        mainContent.innerHTML = html;
+        updateBreadcrumb();
+        hideLoading();
+    }
+
+    /* ==================================================
+       VISTA: CONTENIDO DEL RECURSO
+       ================================================== */
+    async function openResource(resourceType) {
+        showLoading();
+        try {
+            const cacheKey = `${selectedBook.id}-${selectedChapter.numero}-${resourceType}`;
+            let metadata = resourceMetadataCache[cacheKey];
+            
+            if (!metadata) {
+                const metadataPath = getResourcePath(selectedBook.id, selectedChapter.numero, resourceType) + 'metadata.json';
+                metadata = await fetchJSON(metadataPath);
+            }
+            
+            selectedResource = metadata;
+            selectedResource.tipo = resourceType;
+            
+            // Cargar contenido HTML
+            const contentPath = getResourcePath(selectedBook.id, selectedChapter.numero, resourceType) + metadata.archivoContenido;
+            const contentHtml = await fetchHTML(contentPath);
+            
+            currentView = 'content';
+            renderContent(contentHtml);
+        } catch (error) {
+            hideLoading();
+            showError('Error al cargar el contenido del recurso.');
+            console.error(error);
+        }
+    }
+
+    function renderContent(contentHtml) {
+        let finalHtml = contentHtml;
+        
+        // Si es video y tiene video_id en metadata, generar el contenedor de video
+        if (selectedResource.tipo === 'video' && selectedResource.videoYoutube) {
+            // Verificar si ya tiene contenedor de video
+            if (!finalHtml.includes('contenedor-video')) {
+                finalHtml = `
+                    <div class="contenedor-video" id="player-container">
+                        <img class="miniatura" src="https://img.youtube.com/vi/${selectedResource.videoYoutube}/hqdefault.jpg" alt="Video" />
+                        <button class="btn-play"></button>
+                    </div>
+                    ${finalHtml}
+                `;
+            }
+        }
+
+        let html = `
+            <button class="btn-back" onclick="backToResources()">← Volver a Recursos</button>
+            <div class="contenedor-blog fade-in">
+                ${finalHtml}
+            </div>
+        `;
+
+        mainContent.innerHTML = html;
+        updateBreadcrumb();
+        initContentScripts();
+        hideLoading();
+    }
+
+    /* ==================================================
+       NAVEGACIÓN
+       ================================================== */
+    function backToChapters() {
+        renderChaptersView();
+    }
+
+    function backToResources() {
+        renderResourcesView();
+    }
+
+    function updateBreadcrumb() {
+        let html = '';
+        if (currentView === 'books') {
+            html = '<span class="current">Inicio</span>';
+        } else if (currentView === 'chapters') {
+            html = `<a onclick="renderBooks()">Inicio</a> <span class="sep">›</span> <span class="current">${selectedBook.nombre}</span>`;
+        } else if (currentView === 'resources') {
+            html = `<a onclick="renderBooks()">Inicio</a> <span class="sep">›</span> <a onclick="backToChapters()">${selectedBook.nombre}</a> <span class="sep">›</span> <span class="current">Cap. ${selectedChapter.numero}</span>`;
+        } else if (currentView === 'content') {
+            html = `<a onclick="renderBooks()">Inicio</a> <span class="sep">›</span> <a onclick="backToChapters()">${selectedBook.nombre}</a> <span class="sep">›</span> <a onclick="backToResources()">Cap. ${selectedChapter.numero}</a> <span class="sep">›</span> <span class="current">${selectedResource.titulo}</span>`;
+        }
+        breadcrumb.innerHTML = html;
+    }
+
+    /* ==================================================
+       SCRIPTS DEL CONTENIDO
+       ================================================== */
+    function initContentScripts() {
+        // Scroll suave para anclas internas
+        document.querySelectorAll('.contenedor-blog a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        // Inicializar Video Player
+        initVideoPlayer();
+    }
+
+    function initVideoPlayer() {
+        const container = document.getElementById('player-container');
+        if (!container) return;
+
+        const img = container.querySelector('img.miniatura');
+        if (!img) return;
+
+        const match = img.src.match(/\/vi\/([^\/]+)/);
+        if (!match) return;
+
+        const vid = match[1];
+        let player = null;
+        let apiReady = false;
+
+        function restaurar() {
+            if (player) { try { player.destroy(); } catch(e) {} player = null; }
+            container.innerHTML = `<img class="miniatura" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/${vid}/mqdefault.jpg'" /><button class="btn-play"></button>`;
+            container.style.cursor = 'pointer';
+            container.onclick = reproducir;
+        }
+
+        function reproducir() {
+            container.innerHTML = '<div id="yt-player-div" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>';
+            container.style.cursor = 'default';
+            container.onclick = null;
+
+            if (!apiReady) {
+                const tag = document.createElement('script');
+                tag.src = 'https://www.youtube.com/iframe_api';
+                document.getElementsByTagName('script')[0].parentNode.insertBefore(tag, document.getElementsByTagName('script')[0]);
+                window.onYouTubeIframeAPIReady = function() { apiReady = true; crearPlayer(); };
+            } else { crearPlayer(); }
+        }
+
+        function crearPlayer() {
+            const div = document.getElementById('yt-player-div');
+            if (!div) return;
+            player = new YT.Player('yt-player-div', {
+                videoId: vid,
+                playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
+                height: '100%', width: '100%',
+                events: { 'onStateChange': function(e) { if (e.data === 0) { setTimeout(restaurar, 300); } } }
+            });
+        }
+
+        container.onclick = reproducir;
+    }
+
+    /* ==================================================
+       MANEJO DE ERRORES
+       ================================================== */
+    function showError(message) {
+        mainContent.innerHTML = `
+            <div class="error-message fade-in">
+                <h3>⚠️ Error</h3>
+                <p>${message}</p>
+                <button class="btn-back" onclick="renderBooks()" style="margin-top: 20px;">← Volver al inicio</button>
+            </div>
+        `;
+    }
+
+    // Arrancar la aplicación
+    init();
+</script>
+</body>
+</html>
